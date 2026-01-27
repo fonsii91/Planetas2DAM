@@ -1,1 +1,1 @@
-Planetas2DAM -> frontend en Angular
+Planetas_front_v21 -> frontend en Angular V21

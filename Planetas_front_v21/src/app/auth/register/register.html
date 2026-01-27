@@ -1,0 +1,36 @@
+<div class="battle-bg">
+  <mat-card class="battle-card orange-glow">
+    <mat-card-header>
+      <mat-card-title class="tech-title orange-text">RECLUTAMIENTO</mat-card-title>
+      <mat-card-subtitle class="tech-subtitle">Protocolo de Nueva Cuenta</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="battle-form">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Nombre de Guerra</mat-label>
+          <input matInput formControlName="username">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Frecuencia (Email)</mat-label>
+          <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Clave Orbital</mat-label>
+          <input matInput type="password" formControlName="password">
+        </mat-form-field>
+
+        <button mat-flat-button class="btn-orange" [disabled]="registerForm.invalid">
+          CONFIRMAR ALISTAMIENTO
+        </button>
+
+        <div class="auth-footer">
+          <span>¿Ya eres piloto? </span>
+          <a routerLink="/login" class="link-orange">Volver a Consola</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
