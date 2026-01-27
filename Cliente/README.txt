@@ -1,0 +1,1 @@
+En esta carpeta se creará el cliente utilizando el framework Angular
