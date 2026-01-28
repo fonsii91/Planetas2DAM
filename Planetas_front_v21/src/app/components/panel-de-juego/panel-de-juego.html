@@ -1,0 +1,57 @@
+<div class="game-container">
+  <!-- Columna del Jugador -->
+  <div class="player-column">
+    <mat-card class="player-card cyan-glow">
+      <mat-card-header>
+        <mat-card-title class="tech-title cyan-text">{{ jugadorActual.nombre }}</mat-card-title>
+        <mat-card-subtitle class="tech-subtitle">Tu Planeta: {{ jugadorActual.planeta.nombre }} (Tipo: {{ jugadorActual.planeta.tipo }})</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="orange-text">Vida: {{ jugadorActual.vida }}</p>
+        <p class="orange-text">Misiles: {{ jugadorActual.misilesDisponibles }}</p>
+      </mat-card-content>
+    </mat-card>
+
+
+
+  </div>
+
+  <!-- Columna de Enemigos y Acciones -->
+  <div class="enemies-column">
+    <div class="round-info">
+      <h2 class="tech-title white-text">RONDA #{{ numeroRonda }}</h2>
+    </div>
+
+    <div class="enemies-grid">
+      <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow">
+        <mat-card-header>
+          <mat-card-title class="tech-title red-text">{{ enemigo.nombre }}</mat-card-title>
+          <mat-card-subtitle class="tech-subtitle">Planeta: {{ enemigo.planeta.nombre }} (Tipo: {{ enemigo.planeta.tipo }})</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Vida: {{ enemigo.vida }}</p>
+          <mat-form-field>
+            <mat-label class="orange-text">Misiles para atacar</mat-label>
+            <input matInput type="number" min="0" [max]="maxMisilesPorAtaque(enemigo)" [(ngModel)]="ataques[enemigo.nombre].misiles">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="action-buttons">
+      <button mat-flat-button class="btn-cyan" (click)="lanzarAtaque()">LANZAR MISILES</button>
+      <button mat-flat-button class="btn-orange">DEFENDER</button>
+    </div>
+
+    <mat-card class="log-card blue-glow">
+        <mat-card-header>
+            <mat-card-title class="tech-title blue-text">REGISTRO DE BATALLA</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="log-messages">
+                <p *ngFor="let mensaje of mensajesRonda" class="log-entry">{{mensaje.texto}}</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+  </div>
+</div>

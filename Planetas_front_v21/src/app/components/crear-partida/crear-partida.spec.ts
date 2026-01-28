@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterComponent } from './register';
+import { CrearPartida } from './crear-partida';
 
-describe('Register', () => {
-  let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
+describe('CrearPartida', () => {
+  let component: CrearPartida;
+  let fixture: ComponentFixture<CrearPartida>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent]
+      imports: [CrearPartida]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterComponent);
+    fixture = TestBed.createComponent(CrearPartida);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,1 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #050a0f; 
+}
+
+.auth-page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+              url('/images/fondo.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* Estilo común para las tarjetas de batalla */
+.battle-card {
+  background: rgba(13, 20, 28, 0.9) !important; /* Muy oscuro y traslúcido */
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  color: #e0e0e0 !important;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  max-width: 400px;
+  width: 90%;
+  padding: 1rem;
+}
+
+/* Forzar colores de Angular Material para que resalten en oscuro */
+.mat-mdc-form-field-label { color: rgba(255,255,255,0.6) !important; }
+.mat-mdc-input-element { color: white !important; }
+
+/* Efectos Neon */
+.cyan-glow { border: 2px solid #00f2ff !important; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
+.orange-glow { border: 2px solid #ff6b00 !important; box-shadow: 0 0 20px rgba(255, 107, 0, 0.4); }
+
+.tech-title { font-weight: bold !important; letter-spacing: 2px; }
+.cyan-text { color: #00f2ff !important; }
+.orange-text { color: #ff6b00 !important; }
+
+.tech-subtitle { color: rgba(255, 255, 255, 0.7) !important; font-style: italic; }
+
+.battle-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+
+/* Botones Custom */
+.btn-cyan { background-color: #00f2ff !important; color: #000 !important; font-weight: bold !important; padding: 25px !important; }
+.btn-orange { background-color: #ff6b00 !important; color: #fff !important; font-weight: bold !important; padding: 25px !important; cursor:pointer;}
+
+.auth-footer { text-align: center; margin-top: 15px; font-size: 0.85rem; }
+.link-cyan { color: #00f2ff; text-decoration: none; font-weight: bold; }
+.link-orange { color: #ff6b00; text-decoration: none; font-weight: bold; }
+
+/* Overrides para Angular Material en modo oscuro */
+::ng-deep .mat-mdc-form-field-label { color: rgba(255, 255, 255, 0.6) !important; }
+::ng-deep .mat-mdc-input-element { color: white !important; }

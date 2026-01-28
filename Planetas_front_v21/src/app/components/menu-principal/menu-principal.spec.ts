@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterComponent } from './register';
+import { MenuPrincipal } from './menu-principal';
 
-describe('Register', () => {
-  let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
+describe('MenuPrincipal', () => {
+  let component: MenuPrincipal;
+  let fixture: ComponentFixture<MenuPrincipal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent]
+      imports: [MenuPrincipal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterComponent);
+    fixture = TestBed.createComponent(MenuPrincipal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

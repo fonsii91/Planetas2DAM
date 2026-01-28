@@ -12,7 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [
     ReactiveFormsModule, RouterLink, MatCardModule, 
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule
+    MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
+    RouterLink
   ],
   templateUrl: './register.html',
   styleUrl: './register.css'

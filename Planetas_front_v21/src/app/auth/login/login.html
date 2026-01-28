@@ -20,9 +20,14 @@
           </button>
         </mat-form-field>
 
-        <button mat-flat-button style="background-color: #ff6b00; color: white; padding: 25px;" [disabled]="loginForm.invalid">
+        <button mat-flat-button class="btn-orange" [disabled]="loginForm.invalid"
+        routerLink="/menu-principal">
           Iniciar Sesión
         </button>
+        <div class="auth-footer">
+          <span>¿Aún no tienes cuenta creada? </span>
+          <a routerLink="/register" class="link-orange">Crear Cuenta</a>
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

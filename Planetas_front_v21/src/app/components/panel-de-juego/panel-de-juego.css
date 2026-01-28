@@ -1,0 +1,194 @@
+:host {
+  font-family: 'Exo 2', sans-serif;
+}
+
+.game-container {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  height: 100vh;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/fondo.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  box-sizing: border-box;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.player-column, .enemies-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.player-column {
+  flex: 1;
+}
+
+.enemies-column {
+  flex: 2;
+}
+
+.player-card, .enemy-card, .log-card {
+  width: 100%;
+  background-color: rgba(10, 25, 47, 0.85); /* Fondo de tarjeta semi-transparente */
+  border: 1px solid #00ffff;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-card:hover, .enemy-card:hover, .log-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
+}
+
+.log-card {
+  flex-grow: 1;
+}
+
+.log-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border-top: 1px solid #00ffff;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff rgba(10, 25, 47, 0.5);
+}
+
+.log-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.log-messages::-webkit-scrollbar-track {
+  background: rgba(10, 25, 47, 0.5);
+}
+
+.log-messages::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+  border-radius: 3px;
+}
+
+.log-entry {
+  color: #c7d8f2;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.log-entry::before {
+    content: '» ';
+    color: #ffad33;
+}
+
+.round-info h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  text-shadow: 0 0 10px #ffad33;
+}
+
+.enemies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: auto; /* Empuja los botones hacia abajo */
+  padding-top: 20px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.white-text { color: #ffffff; }
+.red-text { color: #ff79c6; }
+.cyan-text { color: #8be9fd; }
+.blue-text { color: #61dafb; }
+.orange-text { color: #ffb86c; }
+
+.tech-title {
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+.tech-subtitle {
+  font-family: 'Exo 2', sans-serif;
+  color: #b0c4de;
+  font-size: 0.9rem;
+}
+
+.cyan-glow { box-shadow: 0 0 15px #8be9fd, 0 0 5px #8be9fd inset; }
+.red-glow { box-shadow: 0 0 15px #ff79c6, 0 0 5px #ff79c6 inset; }
+.blue-glow { box-shadow: 0 0 15px #61dafb, 0 0 5px #61dafb inset; }
+
+/* Estilos para el input de misiles */
+::ng-deep .mat-mdc-form-field .mdc-text-field {
+    background-color: rgba(0,0,0,0.2);
+}
+
+::ng-deep .mat-mdc-form-field .mdc-floating-label {
+    color: #ffb86c !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    color: #ffb86c;
+}
+
+::ng-deep .mat-input-element {
+    color: white !important;
+}
+
+/* Estilos para el slider de misiles */
+mat-slider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* --- Media Queries for Responsiveness --- */
+
+@media (max-width: 960px) {
+  .game-container {
+    flex-direction: column;
+    height: auto; /* Permitir scroll en pantallas pequeñas */
+    padding: 10px;
+  }
+
+  .player-column, .enemies-column {
+    flex: 1; /* Reset flex-grow */
+  }
+
+  .log-messages {
+    height: 200px; /* Reducir altura en pantallas medianas */
+  }
+}
+
+@media (max-width: 600px) {
+  .tech-title {
+    font-size: 1.2rem;
+  }
+
+  .round-info h2 {
+    font-size: 2rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .action-buttons button {
+      width: 100%;
+  }
+
+  .enemies-grid {
+    grid-template-columns: 1fr; /* Una sola columna para los enemigos */
+  }
+}

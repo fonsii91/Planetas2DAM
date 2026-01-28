@@ -1,34 +1,34 @@
-<div class="battle-bg">
+<div class="auth-page-wrapper">
   <mat-card class="battle-card orange-glow">
     <mat-card-header>
-      <mat-card-title class="tech-title orange-text">RECLUTAMIENTO</mat-card-title>
-      <mat-card-subtitle class="tech-subtitle">Protocolo de Nueva Cuenta</mat-card-subtitle>
+      <mat-card-title class="tech-title orange-text">Registro</mat-card-title>
+      <mat-card-subtitle class="tech-subtitle">Crear perfil</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="battle-form">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nombre de Guerra</mat-label>
+          <mat-label>Nickname</mat-label>
           <input matInput formControlName="username">
         </mat-form-field>
 
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Frecuencia (Email)</mat-label>
+          <mat-label>Correo</mat-label>
           <input matInput formControlName="email" type="email">
         </mat-form-field>
 
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Clave Orbital</mat-label>
+          <mat-label>Contraseña</mat-label>
           <input matInput type="password" formControlName="password">
         </mat-form-field>
 
         <button mat-flat-button class="btn-orange" [disabled]="registerForm.invalid">
-          CONFIRMAR ALISTAMIENTO
+          Crear Perfil
         </button>
 
         <div class="auth-footer">
-          <span>¿Ya eres piloto? </span>
-          <a routerLink="/login" class="link-orange">Volver a Consola</a>
+          <span>¿Ya tienes cuenta creada? </span>
+          <a routerLink="/login" class="link-cyan">Volver a Iniciar sesión</a>
         </div>
       </form>
     </mat-card-content>
