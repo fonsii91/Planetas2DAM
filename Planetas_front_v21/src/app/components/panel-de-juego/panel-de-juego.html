@@ -1,6 +1,11 @@
 <div class="game-container">
-  <!-- Columna del Jugador -->
-  <div class="player-column">
+
+
+    <div class="round-info">
+      <h2 class="tech-title white-text">RONDA #{{ numeroRonda }}</h2>
+    </div>
+
+    <div class="enemies-grid">
     <mat-card class="player-card cyan-glow">
       <mat-card-header>
         <mat-card-title class="tech-title cyan-text">{{ jugadorActual.nombre }}</mat-card-title>
@@ -12,17 +17,6 @@
       </mat-card-content>
     </mat-card>
 
-
-
-  </div>
-
-  <!-- Columna de Enemigos y Acciones -->
-  <div class="enemies-column">
-    <div class="round-info">
-      <h2 class="tech-title white-text">RONDA #{{ numeroRonda }}</h2>
-    </div>
-
-    <div class="enemies-grid">
       <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow">
         <mat-card-header>
           <mat-card-title class="tech-title red-text">{{ enemigo.nombre }}</mat-card-title>
@@ -30,10 +24,15 @@
         </mat-card-header>
         <mat-card-content>
           <p>Vida: {{ enemigo.vida }}</p>
-          <mat-form-field>
-            <mat-label class="orange-text">Misiles para atacar</mat-label>
-            <input matInput type="number" min="0" [max]="maxMisilesPorAtaque(enemigo)" [(ngModel)]="ataques[enemigo.nombre].misiles">
-          </mat-form-field>
+          <div class="slider-container">
+            <div class="slider-info">
+              <span class="orange-text">Misiles: {{ ataques[enemigo.nombre].misiles }}</span>
+              <span class="cyan-text" style="font-size: 0.8em; opacity: 0.8;">Max: {{ maxMisilesPorAtaque(enemigo) }}</span>
+            </div>
+            <mat-slider min="0" [max]="maxMisilesPorAtaque(enemigo)" step="1" discrete class="tech-slider">
+              <input matSliderThumb [(ngModel)]="ataques[enemigo.nombre].misiles">
+            </mat-slider>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -54,4 +53,3 @@
         </mat-card-content>
     </mat-card>
   </div>
-</div>

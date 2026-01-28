@@ -4,6 +4,8 @@
 
 .game-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
   gap: 20px;
   height: 100vh;
@@ -89,9 +91,16 @@
 }
 
 .enemies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+}
+
+.enemies-grid .player-card, .enemies-grid .enemy-card {
+  width: auto;
+  flex: 1 1 300px;
 }
 
 .action-buttons {
@@ -145,10 +154,47 @@
     color: white !important;
 }
 
-/* Estilos para el slider de misiles */
-mat-slider {
-  width: 100%;
+/* --- Estilos Personalizados para el Slider Tech --- */
+
+.slider-container {
   margin-top: 10px;
+  padding: 0 5px;
+}
+
+.slider-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -5px; /* Acercar texto al slider */
+}
+
+.tech-slider {
+  width: 100%;
+}
+
+/* Pista inactiva (fondo de la barra) */
+::ng-deep .tech-slider .mdc-slider__track--inactive {
+  background-color: rgba(0, 255, 255, 0.2) !important;
+}
+
+/* Pista activa (barra llena) */
+::ng-deep .tech-slider .mdc-slider__track--active_fill {
+  border-color: #00ffff !important;
+}
+
+/* Botón del slider (Thumb) */
+::ng-deep .tech-slider .mdc-slider__thumb-knob {
+  background-color: #0a192f !important; /* Fondo oscuro */
+  border-color: #00ffff !important;     /* Borde cian */
+  border-width: 2px !important;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.6); /* Brillo */
+}
+
+/* Indicador de valor (burbuja al arrastrar) */
+::ng-deep .tech-slider .mdc-slider__value-indicator {
+  background-color: #00ffff !important;
+  color: #0a192f !important;
+  opacity: 0.9;
 }
 
 /* --- Media Queries for Responsiveness --- */
