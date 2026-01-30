@@ -82,6 +82,14 @@ export class PanelDeJuego {
     return this.jugadorActual.misilesDisponibles - misilesEnOtrosAtaques;
   }
 
+  // Generates an array of 20 segments for the health bar
+  getHealthSegments(vida: number, vidaMaxima: number): boolean[] {
+    const totalSegments = 20;
+    const healthPerSegment = vidaMaxima / totalSegments;
+    const filledSegments = Math.ceil(vida / healthPerSegment);
+    return Array(totalSegments).fill(false).map((_, i) => i < filledSegments);
+  }
+
   lanzarAtaque() {
     const totalMisilesAtaque = Object.values(this.ataques).reduce((total, ataque) => total + ataque.misiles, 0);
 
