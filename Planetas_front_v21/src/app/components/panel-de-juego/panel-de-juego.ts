@@ -7,8 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FormsModule } from '@angular/forms';
-import { Jugador, MensajeRonda } from '../../models';
+import { Jugador, MensajeRonda, getPlanetImage } from '../../models';
 
 @Component({
   selector: 'app-panel-de-juego',
@@ -22,6 +23,7 @@ import { Jugador, MensajeRonda } from '../../models';
     MatFormFieldModule,
     MatInputModule,
     MatSliderModule,
+    MatProgressBarModule,
     FormsModule
   ],
   templateUrl: './panel-de-juego.html',
@@ -33,6 +35,7 @@ export class PanelDeJuego {
   jugadorActual: Jugador = {
     nombre: 'Comandante Shepard',
     vida: 100,
+    vidaMaxima: 100,
     planeta: { nombre: 'Tierra', tipo: 'Tierra' },
     misilesDisponibles: 50
   };
@@ -41,25 +44,34 @@ export class PanelDeJuego {
     {
       nombre: 'Jedi Skywalker',
       vida: 100,
+      vidaMaxima: 100,
       planeta: { nombre: 'Tatooine', tipo: 'Fuego' },
       misilesDisponibles: 50
     },
     {
       nombre: 'StarLord_99',
       vida: 100,
+      vidaMaxima: 100,
       planeta: { nombre: 'Xandar', tipo: 'Aire' },
       misilesDisponibles: 50
     }
   ];
 
   mensajesRonda: MensajeRonda[] = [
-    { texto: 'Inicio de la batalla. Prepara tu estrategia.'}
+    { texto: 'Inicio de la batalla. Prepara tu estrategia.' }
   ];
 
   ataques: { [key: string]: { misiles: number } } = {
     'Jedi Skywalker': { misiles: 0 },
     'StarLord_99': { misiles: 0 }
   };
+
+  getPlanetImage = getPlanetImage;
+
+  get misilesRestantes(): number {
+    const totalAsignados = Object.values(this.ataques).reduce((total, ataque) => total + ataque.misiles, 0);
+    return this.jugadorActual.misilesDisponibles - totalAsignados;
+  }
 
   maxMisilesPorAtaque(enemigo: Jugador): number {
     const misilesEnOtrosAtaques = Object.keys(this.ataques)
@@ -96,6 +108,9 @@ export class PanelDeJuego {
 
     // Resetear ataques para la siguiente ronda
     Object.keys(this.ataques).forEach(key => this.ataques[key].misiles = 0);
+
+    // Resetear misiles del jugador
+    this.jugadorActual.misilesDisponibles = 50;
 
     this.numeroRonda++;
   }
