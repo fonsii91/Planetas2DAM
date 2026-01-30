@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { Jugador, MensajeRonda, getPlanetImage } from '../../models';
 
@@ -24,6 +25,7 @@ import { Jugador, MensajeRonda, getPlanetImage } from '../../models';
     MatInputModule,
     MatSliderModule,
     MatProgressBarModule,
+    MatSidenavModule,
     FormsModule
   ],
   templateUrl: './panel-de-juego.html',
@@ -54,6 +56,20 @@ export class PanelDeJuego {
       vidaMaxima: 100,
       planeta: { nombre: 'Xandar', tipo: 'Aire' },
       misilesDisponibles: 50
+    },
+    {
+      nombre: 'Thanos',
+      vida: 100,
+      vidaMaxima: 100,
+      planeta: { nombre: 'Titan', tipo: 'Tierra' },
+      misilesDisponibles: 50
+    },
+    {
+      nombre: 'Ellen Ripley',
+      vida: 100,
+      vidaMaxima: 100,
+      planeta: { nombre: 'LV-426', tipo: 'Aire' },
+      misilesDisponibles: 50
     }
   ];
 
@@ -63,7 +79,9 @@ export class PanelDeJuego {
 
   ataques: { [key: string]: { misiles: number } } = {
     'Jedi Skywalker': { misiles: 0 },
-    'StarLord_99': { misiles: 0 }
+    'StarLord_99': { misiles: 0 },
+    'Thanos': { misiles: 0 },
+    'Ellen Ripley': { misiles: 0 }
   };
 
   getPlanetImage = getPlanetImage;

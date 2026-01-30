@@ -1,7 +1,7 @@
 <div class="auth-page-wrapper">
   <mat-card class="battle-card cyan-glow">
     <mat-card-header>
-      <mat-card-title class="tech-title cyan-text" >CREAR PARTIDA</mat-card-title>
+      <mat-card-title class="tech-title cyan-text">CREAR PARTIDA</mat-card-title>
       <mat-card-subtitle class="tech-subtitle">Esperando al resto de jugadores...</mat-card-subtitle>
     </mat-card-header>
 
@@ -12,7 +12,9 @@
           <mat-list-item *ngFor="let jugador of jugadores">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
               <span style="color: white; font-family: monospace; font-size: 1.1rem;">> {{ jugador.nombre }}</span>
-              <mat-icon [class.cyan-text]="jugador.estado === 'listo'" [class.orange-text]="jugador.estado === 'eligiendo'" [title]="jugador.estado === 'listo' ? 'Listo para la batalla' : 'Eligiendo planeta'">
+              <mat-icon [class.cyan-text]="jugador.estado === 'listo'"
+                [class.orange-text]="jugador.estado === 'eligiendo'"
+                [matTooltip]="jugador.estado === 'listo' ? 'Listo para la batalla' : 'Eligiendo planeta'">
                 {{ jugador.estado === 'listo' ? 'check_circle' : 'public' }}
               </mat-icon>
             </div>
@@ -22,7 +24,7 @@
 
       <div class="battle-form">
         <!-- <button mat-flat-button class="btn-cyan" (click)="iniciarBatalla()" [disabled]="!todosListos()">INICIAR BATALLA</button> -->
-        <button mat-flat-button class="btn-cyan" (click)="iniciarBatalla()" >INICIAR BATALLA</button>
+        <button mat-flat-button class="btn-cyan" (click)="iniciarBatalla()">INICIAR BATALLA</button>
         <button mat-flat-button class="btn-orange" routerLink="/menu-principal">CANCELAR</button>
       </div>
     </mat-card-content>

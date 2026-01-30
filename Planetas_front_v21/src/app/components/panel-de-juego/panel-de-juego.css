@@ -2,19 +2,65 @@
   font-family: 'Exo 2', sans-serif;
 }
 
+.game-sidenav-container {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('/Planetas2DAM/images/fondo.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   gap: 20px;
-  height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('/Planetas2DAM/images/fondo.png') no-repeat center center;
-  background-size: cover;
-  background-attachment: fixed;
   box-sizing: border-box;
   max-width: 1600px;
   margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+  /* Permitir scroll en el contenido principal si es necesario */
+}
+
+.battle-log-sidenav {
+  width: 400px;
+  max-width: 85vw;
+  /* Responsive width */
+  background-color: rgba(10, 25, 47, 0.95);
+  border-left: 1px solid #00ffff;
+  color: #c7d8f2;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.sidenav-header h3.tech-title {
+  margin: 0;
+  font-size: 1.2rem !important;
+  line-height: 1.4;
+  white-space: normal;
+  /* Permitir que el texto fluya */
+}
+
+.close-btn {
+  color: #c7d8f2;
+}
+
+.log-content {
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .player-column,
@@ -67,15 +113,10 @@
   box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
 }
 
-.log-card {
-  flex-grow: 1;
-}
-
 .log-messages {
-  height: 300px;
+  height: 100%;
   overflow-y: auto;
   padding: 10px;
-  border-top: 1px solid #00ffff;
   scrollbar-width: thin;
   scrollbar-color: #00ffff rgba(10, 25, 47, 0.5);
 }
@@ -97,7 +138,10 @@
   color: #c7d8f2;
   font-family: 'Exo 2', sans-serif;
   font-size: 0.9rem;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  /* Un poco más de espacio */
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 .log-entry::before {
@@ -180,6 +224,19 @@
 
 .blue-glow {
   box-shadow: 0 0 15px #61dafb, 0 0 5px #61dafb inset;
+}
+
+.btn-blue {
+  background-color: rgba(10, 25, 47, 0.8) !important;
+  color: #61dafb !important;
+  border: 1px solid #61dafb !important;
+  box-shadow: 0 0 10px rgba(97, 218, 251, 0.5);
+  transition: all 0.3s ease;
+}
+
+.btn-blue:hover {
+  background-color: rgba(97, 218, 251, 0.2) !important;
+  box-shadow: 0 0 20px rgba(97, 218, 251, 0.8);
 }
 
 /* Estilos para el input de misiles */
@@ -270,26 +327,53 @@
 
 @media (max-width: 600px) {
   .tech-title {
-    font-size: 1.2rem;
+    font-size: 1.4rem !important;
+  }
+
+  .tech-subtitle {
+    font-size: 0.85rem !important;
   }
 
   .round-info h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .action-buttons {
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 15px;
   }
 
   .action-buttons button {
     width: 100%;
+    padding: 22px !important;
+    /* Tappable area larger */
+    font-size: 1rem !important;
   }
 
   .enemies-grid {
     grid-template-columns: 1fr;
-    /* Una sola columna para los enemigos */
+    gap: 15px;
+  }
+
+  /* Compact Header for Mobile */
+  .planet-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .planet-image-container {
+    margin: 10px;
+    margin-right: 12px;
+  }
+
+  .game-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .health-container span {
+    font-size: 0.95rem;
   }
 }
 

@@ -1,79 +1,89 @@
-<div class="game-container">
-
-
-  <div class="round-info">
-    <h2 class="tech-title white-text">RONDA #{{ numeroRonda }}</h2>
-  </div>
-
-  <div class="enemies-grid">
-    <mat-card class="player-card cyan-glow">
-      <mat-card-header>
-        <div class="planet-image-container">
-          <img [src]="getPlanetImage(jugadorActual.planeta.tipo)" alt="Planeta {{ jugadorActual.planeta.nombre }}"
-            class="planet-icon">
-        </div>
-        <div class="header-text">
-          <mat-card-title class="tech-title cyan-text">{{ jugadorActual.nombre }}</mat-card-title>
-          <mat-card-subtitle class="tech-subtitle">Tu Planeta: {{ jugadorActual.planeta.nombre }} (Tipo: {{
-            jugadorActual.planeta.tipo }})</mat-card-subtitle>
-          <div class="health-container">
-            <span class="orange-text">Vida: {{ jugadorActual.vida }} / {{ jugadorActual.vidaMaxima }}</span>
-            <mat-progress-bar mode="determinate" [value]="(jugadorActual.vida / jugadorActual.vidaMaxima) * 100"
-              class="player-health-bar"></mat-progress-bar>
-          </div>
-        </div>
-      </mat-card-header>
-      <mat-card-content>
-
-        <p class="orange-text">Misiles disponibles: {{ misilesRestantes }}</p>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow">
-      <mat-card-header>
-        <div class="planet-image-container">
-          <img [src]="getPlanetImage(enemigo.planeta.tipo)" alt="Planeta {{ enemigo.planeta.nombre }}"
-            class="planet-icon">
-        </div>
-        <div class="header-text">
-          <mat-card-title class="tech-title red-text">{{ enemigo.nombre }}</mat-card-title>
-          <mat-card-subtitle class="tech-subtitle">Planeta: {{ enemigo.planeta.nombre }} (Tipo: {{ enemigo.planeta.tipo
-            }})</mat-card-subtitle>
-          <div class="health-container">
-            <span class="red-text">Vida: {{ enemigo.vida }} / {{ enemigo.vidaMaxima }}</span>
-            <mat-progress-bar mode="determinate" [value]="(enemigo.vida / enemigo.vidaMaxima) * 100"
-              class="enemy-health-bar"></mat-progress-bar>
-          </div>
-        </div>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="slider-container">
-          <div class="slider-info">
-            <span class="orange-text">Misiles: {{ ataques[enemigo.nombre].misiles }}</span>
-            <span class="cyan-text" style="font-size: 0.8em; opacity: 0.8;">Max: {{ maxMisilesPorAtaque(enemigo)
-              }}</span>
-          </div>
-          <mat-slider min="0" [max]="maxMisilesPorAtaque(enemigo)" step="1" discrete class="tech-slider">
-            <input matSliderThumb [(ngModel)]="ataques[enemigo.nombre].misiles">
-          </mat-slider>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div class="action-buttons">
-    <button mat-flat-button class="btn-cyan" (click)="lanzarAtaque()">LANZAR MISILES</button>
-    <button mat-flat-button class="btn-orange">DEFENDER</button>
-  </div>
-
-  <mat-card class="log-card blue-glow">
-    <mat-card-header>
-      <mat-card-title class="tech-title blue-text">REGISTRO DE BATALLA</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+<mat-sidenav-container class="game-sidenav-container">
+  <mat-sidenav #sidenav mode="over" position="end" class="battle-log-sidenav">
+    <div class="sidenav-header">
+      <h3 class="tech-title blue-text">REGISTRO DE BATALLA</h3>
+      <button mat-icon-button (click)="sidenav.close()" class="close-btn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="log-content">
       <div class="log-messages">
         <p *ngFor="let mensaje of mensajesRonda" class="log-entry">{{mensaje.texto}}</p>
       </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="game-container">
+      <div class="round-info">
+        <h2 class="tech-title white-text">RONDA #{{ numeroRonda }}</h2>
+      </div>
+
+      <div class="enemies-grid">
+        <mat-card class="player-card cyan-glow">
+          <mat-card-header>
+            <div class="planet-image-container">
+              <img [src]="getPlanetImage(jugadorActual.planeta.tipo)" alt="Planeta {{ jugadorActual.planeta.nombre }}"
+                class="planet-icon">
+            </div>
+            <div class="header-text">
+              <mat-card-title class="tech-title cyan-text">{{ jugadorActual.nombre }}</mat-card-title>
+              <mat-card-subtitle class="tech-subtitle">Tu Planeta: {{ jugadorActual.planeta.nombre }} (Tipo: {{
+                jugadorActual.planeta.tipo }})</mat-card-subtitle>
+              <div class="health-container">
+                <span class="orange-text">Vida: {{ jugadorActual.vida }} / {{ jugadorActual.vidaMaxima }}</span>
+                <mat-progress-bar mode="determinate" [value]="(jugadorActual.vida / jugadorActual.vidaMaxima) * 100"
+                  class="player-health-bar"></mat-progress-bar>
+              </div>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+
+            <p class="orange-text">Misiles disponibles: {{ misilesRestantes }}</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow">
+          <mat-card-header>
+            <div class="planet-image-container">
+              <img [src]="getPlanetImage(enemigo.planeta.tipo)" alt="Planeta {{ enemigo.planeta.nombre }}"
+                class="planet-icon">
+            </div>
+            <div class="header-text">
+              <mat-card-title class="tech-title red-text">{{ enemigo.nombre }}</mat-card-title>
+              <mat-card-subtitle class="tech-subtitle">Planeta: {{ enemigo.planeta.nombre }} (Tipo: {{
+                enemigo.planeta.tipo
+                }})</mat-card-subtitle>
+              <div class="health-container">
+                <span class="red-text">Vida: {{ enemigo.vida }} / {{ enemigo.vidaMaxima }}</span>
+                <mat-progress-bar mode="determinate" [value]="(enemigo.vida / enemigo.vidaMaxima) * 100"
+                  class="enemy-health-bar"></mat-progress-bar>
+              </div>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="slider-container">
+              <div class="slider-info">
+                <span class="orange-text">Misiles: {{ ataques[enemigo.nombre].misiles }}</span>
+                <span class="cyan-text" style="font-size: 0.8em; opacity: 0.8;">Max: {{ maxMisilesPorAtaque(enemigo)
+                  }}</span>
+              </div>
+              <mat-slider min="0" [max]="maxMisilesPorAtaque(enemigo)" step="1" discrete class="tech-slider">
+                <input matSliderThumb [(ngModel)]="ataques[enemigo.nombre].misiles">
+              </mat-slider>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-flat-button class="btn-cyan" (click)="lanzarAtaque()">LANZAR MISILES</button>
+        <button mat-flat-button class="btn-orange">DEFENDER</button>
+        <button mat-flat-button class="btn-blue" (click)="sidenav.toggle()">
+          <mat-icon>history_edu</mat-icon>
+          REGISTRO DE BATALLA
+        </button>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
