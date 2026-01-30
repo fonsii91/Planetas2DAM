@@ -20,9 +20,7 @@ export class CrearPartida {
   jugadores = [
     { nombre: 'Comandante Shepard', estado: 'listo' },
     { nombre: 'Jedi Skywalker', estado: 'eligiendo' },
-    { nombre: 'StarLord_99', estado: 'listo' },
-    { nombre: 'Thanos', estado: 'listo' },
-    { nombre: 'Ellen Ripley', estado: 'eligiendo' }
+    { nombre: 'StarLord_99', estado: 'listo' }
   ];
 
   todosListos(): boolean {

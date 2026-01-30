@@ -36,8 +36,8 @@ export class PanelDeJuego {
 
   jugadorActual: Jugador = {
     nombre: 'Comandante Shepard',
-    vida: 100,
-    vidaMaxima: 100,
+    vida: 200,
+    vidaMaxima: 200,
     planeta: { nombre: 'Tierra', tipo: 'Tierra' },
     misilesDisponibles: 50
   };
@@ -45,30 +45,16 @@ export class PanelDeJuego {
   enemigos: Jugador[] = [
     {
       nombre: 'Jedi Skywalker',
-      vida: 100,
-      vidaMaxima: 100,
+      vida: 200,
+      vidaMaxima: 200,
       planeta: { nombre: 'Tatooine', tipo: 'Fuego' },
       misilesDisponibles: 50
     },
     {
       nombre: 'StarLord_99',
-      vida: 100,
-      vidaMaxima: 100,
+      vida: 200,
+      vidaMaxima: 200,
       planeta: { nombre: 'Xandar', tipo: 'Aire' },
-      misilesDisponibles: 50
-    },
-    {
-      nombre: 'Thanos',
-      vida: 100,
-      vidaMaxima: 100,
-      planeta: { nombre: 'Titan', tipo: 'Tierra' },
-      misilesDisponibles: 50
-    },
-    {
-      nombre: 'Ellen Ripley',
-      vida: 100,
-      vidaMaxima: 100,
-      planeta: { nombre: 'LV-426', tipo: 'Aire' },
       misilesDisponibles: 50
     }
   ];
@@ -79,9 +65,7 @@ export class PanelDeJuego {
 
   ataques: { [key: string]: { misiles: number } } = {
     'Jedi Skywalker': { misiles: 0 },
-    'StarLord_99': { misiles: 0 },
-    'Thanos': { misiles: 0 },
-    'Ellen Ripley': { misiles: 0 }
+    'StarLord_99': { misiles: 0 }
   };
 
   getPlanetImage = getPlanetImage;
@@ -131,5 +115,29 @@ export class PanelDeJuego {
     this.jugadorActual.misilesDisponibles = 50;
 
     this.numeroRonda++;
+  }
+
+  agregarEnemigo() {
+    // Máximo 9 enemigos + 1 jugador = 10 jugadores totales
+    if (this.enemigos.length >= 9) {
+      return;
+    }
+
+    const id = this.enemigos.length + 1;
+    const tiposPlaneta: ('Normal' | 'Agua' | 'Fuego' | 'Planta' | 'Tierra' | 'Aire')[] = ['Normal', 'Agua', 'Fuego', 'Planta', 'Tierra', 'Aire'];
+    const tipoAleatorio = tiposPlaneta[Math.floor(Math.random() * tiposPlaneta.length)];
+    const nuevoNombre = `Enemigo Simulador ${id}`;
+
+    const nuevoEnemigo: Jugador = {
+      nombre: nuevoNombre,
+      vida: 200,
+      vidaMaxima: 200,
+      planeta: { nombre: `Planeta ${id}`, tipo: tipoAleatorio },
+      misilesDisponibles: 50
+    };
+
+    this.enemigos.push(nuevoEnemigo);
+    this.ataques[nuevoNombre] = { misiles: 0 };
+    this.mensajesRonda.push({ texto: `> ¡Un nuevo rival ha entrado al sistema: ${nuevoNombre}!` });
   }
 }

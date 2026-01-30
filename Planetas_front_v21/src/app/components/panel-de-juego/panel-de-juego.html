@@ -79,6 +79,9 @@
       <div class="action-buttons">
         <button mat-flat-button class="btn-cyan" (click)="lanzarAtaque()">LANZAR MISILES</button>
         <button mat-flat-button class="btn-orange">DEFENDER</button>
+        <button mat-flat-button class="btn-cyan" (click)="agregarEnemigo()" [disabled]="enemigos.length >= 9">
+          <mat-icon>person_add</mat-icon> AÑADIR JUGADOR
+        </button>
         <button mat-flat-button class="btn-blue" (click)="sidenav.toggle()">
           <mat-icon>history_edu</mat-icon>
           REGISTRO DE BATALLA
