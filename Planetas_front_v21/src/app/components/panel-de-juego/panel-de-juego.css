@@ -9,7 +9,7 @@
   padding: 20px;
   gap: 20px;
   height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('images/fondo.png') no-repeat center center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('/Planetas2DAM/images/fondo.png') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   box-sizing: border-box;
