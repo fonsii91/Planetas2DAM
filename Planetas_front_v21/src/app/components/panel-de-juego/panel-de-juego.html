@@ -20,7 +20,7 @@
       </div>
 
       <div class="enemies-grid">
-        <mat-card class="player-card cyan-glow">
+        <mat-card class="player-card cyan-glow" [class.eliminated]="jugadorActual.vida <= 0">
           <mat-card-header>
             <div class="planet-image-container">
               <img [src]="getPlanetImage(jugadorActual.planeta.tipo)" alt="Planeta {{ jugadorActual.planeta.nombre }}"
@@ -43,7 +43,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow">
+        <mat-card *ngFor="let enemigo of enemigos" class="enemy-card red-glow" [class.eliminated]="enemigo.vida <= 0">
           <mat-card-header>
             <div class="planet-image-container">
               <img [src]="getPlanetImage(enemigo.planeta.tipo)" alt="Planeta {{ enemigo.planeta.nombre }}"
