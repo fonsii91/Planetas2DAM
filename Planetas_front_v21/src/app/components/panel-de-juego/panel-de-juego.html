@@ -8,7 +8,14 @@
     </div>
     <div class="log-content">
       <div class="log-messages">
-        <p *ngFor="let mensaje of mensajesRonda" class="log-entry">{{mensaje.texto}}</p>
+        <div *ngFor="let mensaje of mensajesRonda" class="log-entry" [ngClass]="mensaje.tipo || 'info'">
+          <mat-icon class="log-icon" *ngIf="mensaje.tipo === 'success'">check_circle</mat-icon>
+          <mat-icon class="log-icon" *ngIf="mensaje.tipo === 'warning'">warning</mat-icon>
+          <mat-icon class="log-icon" *ngIf="mensaje.tipo === 'danger'">error</mat-icon>
+          <mat-icon class="log-icon" *ngIf="mensaje.tipo === 'round'">timer</mat-icon>
+          <mat-icon class="log-icon" *ngIf="!mensaje.tipo || mensaje.tipo === 'info'">info</mat-icon>
+          <span [innerHTML]="mensaje.texto"></span>
+        </div>
       </div>
     </div>
   </mat-sidenav>
@@ -25,6 +32,10 @@
             <div class="planet-image-container">
               <img [src]="getPlanetImage(jugadorActual.planeta.tipo)" alt="Planeta {{ jugadorActual.planeta.nombre }}"
                 class="planet-icon">
+              <!-- Floating Damage Number for Player (prepared for future AI implementation) -->
+              <div class="damage-popup" *ngIf="damageDealt[jugadorActual.nombre]">
+                -{{ damageDealt[jugadorActual.nombre] }}
+              </div>
             </div>
             <div class="header-text">
               <mat-card-title class="tech-title cyan-text">{{ jugadorActual.nombre }}</mat-card-title>
@@ -48,6 +59,10 @@
             <div class="planet-image-container">
               <img [src]="getPlanetImage(enemigo.planeta.tipo)" alt="Planeta {{ enemigo.planeta.nombre }}"
                 class="planet-icon">
+              <!-- Floating Damage Number -->
+              <div class="damage-popup" *ngIf="damageDealt[enemigo.nombre]">
+                -{{ damageDealt[enemigo.nombre] }}
+              </div>
             </div>
             <div class="header-text">
               <mat-card-title class="tech-title red-text">{{ enemigo.nombre }}</mat-card-title>

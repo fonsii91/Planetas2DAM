@@ -13,6 +13,7 @@ export interface Jugador {
 
 export interface MensajeRonda {
   texto: string;
+  tipo?: 'info' | 'success' | 'warning' | 'danger' | 'round';
 }
 
 export interface Ataque {

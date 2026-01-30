@@ -60,7 +60,7 @@ export class PanelDeJuego {
   ];
 
   mensajesRonda: MensajeRonda[] = [
-    { texto: 'Inicio de la batalla. Prepara tu estrategia.' }
+    { texto: 'Inicio de la batalla. Prepara tu estrategia.', tipo: 'info' }
   ];
 
   ataques: { [key: string]: { misiles: number } } = {
@@ -87,13 +87,13 @@ export class PanelDeJuego {
 
     if (totalMisilesAtaque > this.jugadorActual.misilesDisponibles) {
       // Manejar el error, por ejemplo, con un mensaje en la UI
-      this.mensajesRonda.push({ texto: 'Error: No tienes suficientes misiles para este ataque.' });
+      this.mensajesRonda.push({ texto: 'Error: No tienes suficientes misiles para este ataque.', tipo: 'warning' });
       return;
     }
 
     this.jugadorActual.misilesDisponibles -= totalMisilesAtaque;
 
-    this.mensajesRonda.push({ texto: `Ronda ${this.numeroRonda}:` });
+    this.mensajesRonda.push({ texto: `COMIENZO DE RONDA ${this.numeroRonda}`, tipo: 'round' });
 
     Object.keys(this.ataques).forEach(nombreEnemigo => {
       const ataque = this.ataques[nombreEnemigo];
@@ -103,7 +103,8 @@ export class PanelDeJuego {
           // Lógica simple de daño
           const danio = ataque.misiles * 2; // Cada misil hace 2 de daño (ejemplo)
           enemigo.vida -= danio;
-          this.mensajesRonda.push({ texto: `> Has lanzado ${ataque.misiles} misiles a ${nombreEnemigo}, causando ${danio} de daño.` });
+          this.mensajesRonda.push({ texto: `Ataque a <b>${nombreEnemigo}</b>: Impacto de <b>${ataque.misiles}</b> misiles (<span style="color: #ff79c6">-${danio} HP</span>).`, tipo: 'success' });
+          this.showDamage(nombreEnemigo, danio);
         }
       }
     });
@@ -138,6 +139,17 @@ export class PanelDeJuego {
 
     this.enemigos.push(nuevoEnemigo);
     this.ataques[nuevoNombre] = { misiles: 0 };
-    this.mensajesRonda.push({ texto: `> ¡Un nuevo rival ha entrado al sistema: ${nuevoNombre}!` });
+    this.mensajesRonda.push({ texto: `¡Un nuevo rival ha entrado al sistema: <b>${nuevoNombre}</b>!`, tipo: 'warning' });
+  }
+
+  // --- Visual Effects Logic ---
+  damageDealt: { [key: string]: number | null } = {};
+
+  showDamage(nombre: string, cantidad: number) {
+    this.damageDealt[nombre] = cantidad;
+    // Auto-hide after animation plays (2s in CSS)
+    setTimeout(() => {
+      this.damageDealt[nombre] = null;
+    }, 2000);
   }
 }

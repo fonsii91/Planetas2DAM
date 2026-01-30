@@ -107,6 +107,8 @@
 
 .planet-image-container {
   margin: 20px;
+  position: relative;
+  /* Anchor for absolute positioning of damage numbers */
 }
 
 .player-card:hover,
@@ -138,18 +140,74 @@
 }
 
 .log-entry {
-  color: #c7d8f2;
   font-family: 'Exo 2', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   margin-bottom: 8px;
-  /* Un poco más de espacio */
-  padding-bottom: 4px;
+  padding: 8px;
   border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 
-.log-entry::before {
-  content: '» ';
+.log-entry.round {
+  background: rgba(0, 255, 255, 0.1);
+  border-left: 3px solid #00ffff;
+  color: #00ffff;
+  font-weight: bold;
+  margin-top: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.log-entry.success {
+  border-left: 3px solid #50ff50;
+  color: #aaddaa;
+}
+
+.log-entry.warning {
+  border-left: 3px solid #ffad33;
+  color: #ffdab3;
+}
+
+.log-entry.danger {
+  border-left: 3px solid #ff3333;
+  color: #ff9999;
+}
+
+.log-entry.info {
+  border-left: 3px solid #61dafb;
+  color: #c7d8f2;
+}
+
+.log-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  /* Align with text */
+}
+
+.log-entry.success .log-icon {
+  color: #50ff50;
+}
+
+.log-entry.warning .log-icon {
   color: #ffad33;
+}
+
+.log-entry.danger .log-icon {
+  color: #ff3333;
+}
+
+.log-entry.round .log-icon {
+  color: #00ffff;
+}
+
+.log-entry.info .log-icon {
+  color: #61dafb;
 }
 
 .round-info h2 {
@@ -514,4 +572,46 @@ mat-card-header {
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 10;
   white-space: nowrap;
+}
+
+/* --- Floating Damage Numbers --- */
+.damage-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff3333;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 2px 2px 0 #000;
+  pointer-events: none;
+  z-index: 100;
+  animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(0.5);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  20% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -150%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -200%);
+  }
 }
