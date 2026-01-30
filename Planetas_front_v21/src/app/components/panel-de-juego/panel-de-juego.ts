@@ -110,9 +110,15 @@ export class PanelDeJuego {
         if (enemigo) {
           // Lógica simple de daño
           const danio = ataque.misiles * 2; // Cada misil hace 2 de daño (ejemplo)
+          const estabaVivo = enemigo.vida > 0;
           enemigo.vida -= danio;
           this.mensajesRonda.push({ texto: `Ataque a <b>${nombreEnemigo}</b>: Impacto de <b>${ataque.misiles}</b> misiles (<span style="color: #ff79c6">-${danio} HP</span>).`, tipo: 'success' });
           this.showDamage(nombreEnemigo, danio);
+
+          if (estabaVivo && enemigo.vida <= 0) {
+            enemigo.vida = 0; // Ensure health doesn't go below 0 visually
+            this.mensajesRonda.push({ texto: `¡<b>${nombreEnemigo}</b> ha sido ELIMINADO de la galaxia!`, tipo: 'danger' });
+          }
         }
       }
     });
