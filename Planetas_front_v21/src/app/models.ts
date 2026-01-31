@@ -1,6 +1,6 @@
 export interface Planeta {
   nombre: string;
-  tipo: 'Normal' | 'Agua' | 'Fuego' | 'Planta' | 'Tierra' | 'Aire';
+  tipo: 'Normal' | 'Agua' | 'Fuego' | 'Planta' | 'Roca' | 'Aire';
 }
 
 export interface Jugador {
@@ -23,9 +23,12 @@ export interface Ataque {
 }
 
 export const PLANET_IMAGES: { [key: string]: string } = {
-  'Tierra': 'images/planets/earth.png',
+  'Normal': 'images/planets/normal.png',
   'Fuego': 'images/planets/fire.png',
-  'Aire': 'images/planets/air.png'
+  'Aire': 'images/planets/air.png',
+  'Planta': 'images/planets/plant.png',
+  'Agua': 'images/planets/water.png',
+  'Roca': 'images/planets/rock.png'
 };
 
 export function getPlanetImage(tipo: string): string {

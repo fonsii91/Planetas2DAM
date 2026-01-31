@@ -98,7 +98,7 @@
   width: 150px;
   height: 150px;
 
-  border-radius: 50%;
+  border-radius: 5%;
   object-fit: cover;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   /* Cyan glow by default */
@@ -183,11 +183,18 @@
 }
 
 .log-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  /* Prevent crushing */
   margin-top: 2px;
-  /* Align with text */
+  flex-shrink: 0;
+  /* Critical: prevents icon from being squashed by text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
 
 .log-entry.success .log-icon {
@@ -331,77 +338,123 @@
   color: white !important;
 }
 
-/* --- Estilos Personalizados para el Slider Tech --- */
-
-.slider-container {
-  margin-top: 10px;
-  padding: 0 5px;
-}
-
-.slider-info {
+/* --- Missile Control Styles --- */
+.missile-controls-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: -5px;
-  /* Acercar texto al slider */
-}
-
-.tech-slider {
-  width: 100%;
-}
-
-/* Pista inactiva (fondo de la barra) */
-::ng-deep .tech-slider .mdc-slider__track--inactive {
-  background-color: rgba(0, 255, 255, 0.2) !important;
-}
-
-/* Pista activa (barra llena) */
-::ng-deep .tech-slider .mdc-slider__track--active_fill {
-  border-color: #00ffff !important;
-}
-
-/* Botón del slider (Thumb) */
-::ng-deep .tech-slider .mdc-slider__thumb-knob {
-  background-color: #0a192f !important;
-  /* Fondo oscuro */
-  border-color: #00ffff !important;
-  /* Borde cian */
-  border-width: 2px !important;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
-  /* Brillo */
-}
-
-/* Indicador de valor (burbuja al arrastrar) */
-/* Indicador de valor (burbuja al arrastrar) */
-::ng-deep .tech-slider .mdc-slider__value-indicator {
-  background-color: #00ffff !important;
-  color: #0a192f !important;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+  margin-bottom: 5px;
   opacity: 0.9;
 }
 
-/* --- Numeric Input & Slider Layout --- */
-.slider-wrapper {
+.label-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #ffb86c;
+  /* Orange to match "Misiles disponibles" theme generally or keep it distinctive */
+}
+
+.control-label {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffb86c;
+  text-transform: uppercase;
+}
+
+.missile-controls {
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: center;
+  gap: 8px;
+  margin: 5px 0 10px 0;
+  /* Adjusted margins */
+}
+
+.control-btn {
+  background: rgba(10, 25, 47, 0.8);
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.control-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.control-btn:disabled {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.max-btn {
+  width: auto;
+  padding: 0 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .tech-input-number {
-  width: 60px;
-  background: rgba(0, 0, 0, 0.3);
+  width: 80px;
+  height: 42px;
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid #00ffff;
-  color: #00ffff;
+  color: #ffffff;
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.1rem;
-  padding: 5px;
+  font-size: 1.5rem;
   text-align: center;
   border-radius: 4px;
+  box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
 }
 
 .tech-input-number:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  background: rgba(0, 20, 40, 0.8);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
 }
+
+/* Chrome, Safari, Edge, Opera - Remove arrows/spinners */
+.tech-input-number::-webkit-outer-spin-button,
+.tech-input-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.tech-input-number {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.slider-info {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  font-family: 'Exo 2', sans-serif;
+}
+
 
 /* --- Shake Animation & Particles --- */
 .shake-wrapper {
@@ -607,6 +660,8 @@ mat-card-header {
   display: block;
   margin-bottom: 5px;
 }
+
+
 
 /* Custom Health Bar - Segmented Design */
 .custom-health-bar-container {

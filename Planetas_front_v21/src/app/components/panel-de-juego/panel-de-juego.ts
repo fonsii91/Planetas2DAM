@@ -38,7 +38,7 @@ export class PanelDeJuego {
     nombre: 'Comandante Shepard',
     vida: 200,
     vidaMaxima: 200,
-    planeta: { nombre: 'Tierra', tipo: 'Tierra' },
+    planeta: { nombre: 'Tierra', tipo: 'Normal' },
     misilesDisponibles: 50
   };
 
@@ -54,7 +54,7 @@ export class PanelDeJuego {
       nombre: 'StarLord_99',
       vida: 200,
       vidaMaxima: 200,
-      planeta: { nombre: 'Xandar', tipo: 'Aire' },
+      planeta: { nombre: 'Xandar', tipo: 'Planta' },
       misilesDisponibles: 50
     }
   ];
@@ -75,6 +75,10 @@ export class PanelDeJuego {
     return this.jugadorActual.misilesDisponibles - totalAsignados;
   }
 
+  get misilesDefensa(): number {
+    return Math.floor(this.misilesRestantes / 2);
+  }
+
   maxMisilesPorAtaque(enemigo: Jugador): number {
     const misilesEnOtrosAtaques = Object.keys(this.ataques)
       .filter(key => key !== enemigo.nombre)
@@ -88,6 +92,29 @@ export class PanelDeJuego {
     const healthPerSegment = vidaMaxima / totalSegments;
     const filledSegments = Math.ceil(vida / healthPerSegment);
     return Array(totalSegments).fill(false).map((_, i) => i < filledSegments);
+  }
+
+  adjustMissiles(enemigo: Jugador, amount: number) {
+    const max = this.maxMisilesPorAtaque(enemigo);
+    const newValue = this.ataques[enemigo.nombre].misiles + amount;
+
+    if (newValue >= 0 && newValue <= max) {
+      this.ataques[enemigo.nombre].misiles = newValue;
+    }
+  }
+
+  setMaxMissiles(enemigo: Jugador) {
+    this.ataques[enemigo.nombre].misiles = this.maxMisilesPorAtaque(enemigo);
+  }
+
+  validateInput(enemigo: Jugador) {
+    const max = this.maxMisilesPorAtaque(enemigo);
+    let val = this.ataques[enemigo.nombre].misiles;
+
+    if (val < 0) val = 0;
+    if (val > max) val = max;
+
+    this.ataques[enemigo.nombre].misiles = val;
   }
 
   lanzarAtaque() {
@@ -139,7 +166,7 @@ export class PanelDeJuego {
     }
 
     const id = this.enemigos.length + 1;
-    const tiposPlaneta: ('Normal' | 'Agua' | 'Fuego' | 'Planta' | 'Tierra' | 'Aire')[] = ['Normal', 'Agua', 'Fuego', 'Planta', 'Tierra', 'Aire'];
+    const tiposPlaneta: ('Normal' | 'Agua' | 'Fuego' | 'Planta' | 'Roca' | 'Aire')[] = ['Normal', 'Agua', 'Fuego', 'Planta', 'Roca', 'Aire'];
     const tipoAleatorio = tiposPlaneta[Math.floor(Math.random() * tiposPlaneta.length)];
     const nuevoNombre = `Enemigo Simulador ${id}`;
 

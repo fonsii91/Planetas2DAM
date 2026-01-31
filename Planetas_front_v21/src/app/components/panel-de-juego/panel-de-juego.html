@@ -55,7 +55,16 @@
           </mat-card-header>
           <mat-card-content>
 
-            <p class="orange-text">Misiles disponibles: {{ misilesRestantes }}</p>
+            <div class="missile-controls-header">
+              <mat-icon class="label-icon">shield</mat-icon>
+              <span class="control-label">MISILES A DEFENSA </span>
+            </div>
+            <div class="missile-controls">
+              <div class="tech-input-number"
+                style="display: flex; align-items: center; justify-content: center; cursor: default;">
+                {{ misilesDefensa }}
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
 
@@ -90,31 +99,46 @@
             </div>
           </mat-card-header>
           <mat-card-content>
-            <div class="slider-container">
-              <div class="slider-wrapper">
-                <mat-slider min="0" [max]="maxMisilesPorAtaque(enemigo)" step="1" discrete class="tech-slider">
-                  <input matSliderThumb [(ngModel)]="ataques[enemigo.nombre].misiles">
-                </mat-slider>
-                <input type="number" class="tech-input-number" [(ngModel)]="ataques[enemigo.nombre].misiles" min="0"
-                  [max]="maxMisilesPorAtaque(enemigo)">
-              </div>
-              <div class="slider-info">
-                <span class="orange-text">Asignados: {{ ataques[enemigo.nombre].misiles }}</span>
-                <span class="cyan-text" style="font-size: 0.8em; opacity: 0.8;">Max Disp: {{
-                  maxMisilesPorAtaque(enemigo)
-                  }}</span>
-              </div>
+            <div class="missile-controls-header">
+              <mat-icon class="label-icon">rocket_launch</mat-icon>
+              <span class="control-label">ENVIAR MISILES</span>
+            </div>
+            <div class="missile-controls">
+              <button class="control-btn" (click)="adjustMissiles(enemigo, -1)"
+                [disabled]="ataques[enemigo.nombre].misiles <= 0">
+                <mat-icon>remove</mat-icon>
+              </button>
+
+              <input type="number" class="tech-input-number" [(ngModel)]="ataques[enemigo.nombre].misiles"
+                (change)="validateInput(enemigo)" min="0" [max]="maxMisilesPorAtaque(enemigo)">
+
+              <button class="control-btn" (click)="adjustMissiles(enemigo, 1)"
+                [disabled]="ataques[enemigo.nombre].misiles >= maxMisilesPorAtaque(enemigo)">
+                <mat-icon>add</mat-icon>
+              </button>
+
+              <button class="control-btn max-btn" (click)="setMaxMissiles(enemigo)"
+                [disabled]="ataques[enemigo.nombre].misiles >= maxMisilesPorAtaque(enemigo)">
+                MAX
+              </button>
+            </div>
+            <div class="slider-info">
+              <span class="cyan-text" style="font-size: 0.8em; opacity: 0.8;">
+                Disp: {{ maxMisilesPorAtaque(enemigo) - ataques[enemigo.nombre].misiles }} / Total: {{
+                maxMisilesPorAtaque(enemigo) }}
+              </span>
             </div>
           </mat-card-content>
         </mat-card>
       </div>
 
       <div class="action-buttons">
-        <button mat-flat-button class="btn-cyan" (click)="lanzarAtaque()">LANZAR MISILES</button>
-        <button mat-flat-button class="btn-orange">DEFENDER</button>
-        <button mat-flat-button class="btn-cyan" (click)="agregarEnemigo()" [disabled]="enemigos.length >= 9">
+        <button mat-flat-button class="btn-cyan" (click)="agregarEnemigo()" [disabled]="enemigos.length > 9">
           <mat-icon>person_add</mat-icon> AÑADIR JUGADOR
         </button>
+        <button mat-flat-button class="btn-orange" (click)="lanzarAtaque()">LANZAR MISILES</button>
+
+
         <button mat-flat-button class="btn-blue" (click)="sidenav.toggle()">
           <mat-icon>history_edu</mat-icon>
           REGISTRO DE BATALLA
