@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1769819956770,
+  "timestamp": 1769820370596,
   "index": "/Planetas2DAM/index.html",
   "assetGroups": [
     {
@@ -114,9 +114,9 @@
     "/Planetas2DAM/images/planets/rock.png": "d8344f3d2fa850e0595306080d95988d957e73e3",
     "/Planetas2DAM/images/planets/rock2.png": "833c0836954ffb8639524aa40feec1e91fafcdaf",
     "/Planetas2DAM/images/planets/water.png": "faf7bec6d75e48329960181408866e675daa08dc",
-    "/Planetas2DAM/index.html": "0a83f4c728893bea3843087a90be0dc138b2524a",
+    "/Planetas2DAM/index.html": "606d5a5a2de7394ef848f15890319cb7db9c3480",
     "/Planetas2DAM/main-ETGAOPOZ.js": "dc6506f889292a55f05669373cc58edab20c3ae4",
-    "/Planetas2DAM/manifest.webmanifest": "7ea02e2ee92d238efd90f15c32b2529f4a1f5c71",
+    "/Planetas2DAM/manifest.webmanifest": "42e567bbfe1b3aa0721513bb6c3dd271df2d30df",
     "/Planetas2DAM/styles-X6XZMZZ6.css": "b9c71839347ba1da97b9b514fec697f760c4a8e5"
   },
   "navigationUrls": [
