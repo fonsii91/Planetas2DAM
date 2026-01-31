@@ -4,8 +4,8 @@
   "theme_color": "#0a192f",
   "background_color": "#0a192f",
   "display": "standalone",
-  "scope": "/Planetas2DAM/",
-  "start_url": "/Planetas2DAM/",
+  "scope": "./",
+  "start_url": "./",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
