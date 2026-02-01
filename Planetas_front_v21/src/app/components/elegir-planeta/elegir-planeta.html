@@ -1,0 +1,63 @@
+<div class="planet-selection-container">
+    <mat-card class="selection-card cyan-glow">
+        <mat-card-header>
+            <mat-card-title class="tech-title cyan-text">CREAR PLANETA</mat-card-title>
+            <mat-card-subtitle class="tech-subtitle">Selecciona tu tipo de planeta</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="content-wrapper">
+                <!-- Planet Preview -->
+                <div class="planet-preview">
+                    <div class="planet-display-container">
+                        <img [src]="planetImage" alt="Previsualización del Planeta" class="planet-icon floating">
+                        <div class="orbit-ring"></div>
+                    </div>
+                </div>
+
+                <!-- Form Controls -->
+                <div class="form-controls">
+                    <mat-form-field appearance="fill" class="tech-input">
+                        <mat-label>Nombre del Planeta</mat-label>
+                        <input matInput [(ngModel)]="planetName" placeholder="Ej. Tierra-2" required>
+                        <mat-icon matSuffix class="cyan-text">public</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="tech-input">
+                        <mat-label>Tipo de Atmósfera</mat-label>
+                        <mat-select [(ngModel)]="selectedType">
+                            <mat-option *ngFor="let type of planetTypes" [value]="type">
+                                {{ type }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="cyan-text">category</mat-icon>
+                    </mat-form-field>
+
+                    <!-- Planet Stats Info -->
+                    <div class="planet-stats-info" *ngIf="selectedPlanetStats">
+                        <h4 class="info-title cyan-text">{{ selectedType }}</h4>
+                        <p class="info-desc">{{ selectedPlanetStats.descripcion }}</p>
+                        <div class="stat-row">
+                            <span class="stat-label">Vida:</span>
+                            <span class="stat-value">{{ selectedPlanetStats.vidaInicial }}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Misiles:</span>
+                            <span class="stat-value">{{ selectedPlanetStats.misilesIniciales }}</span>
+                        </div>
+                        <div class="stat-row ability-row" *ngIf="selectedPlanetStats.habilidad">
+                            <span class="stat-label">Habilidad:</span>
+                            <span class="stat-value highlight">{{ selectedPlanetStats.habilidad }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-flat-button class="btn-cyan" (click)="confirmar()" [disabled]="!planetName.trim()">
+                <mat-icon>rocket_launch</mat-icon> INICIAR COLONIZACIÓN
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

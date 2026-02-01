@@ -31,6 +31,53 @@ export const PLANET_IMAGES: { [key: string]: string } = {
   'Roca': 'images/planets/rock.png'
 };
 
+
+export interface PlanetStats {
+  vidaInicial: number;
+  misilesIniciales: number;
+  descripcion: string;
+  habilidad?: string;
+}
+
+export const PLANET_RULES: { [key: string]: PlanetStats } = {
+  'Normal': {
+    vidaInicial: 200,
+    misilesIniciales: 50,
+    descripcion: 'Equilibrado. Estándar de la flota.',
+    habilidad: 'Ninguna'
+  },
+  'Fuego': {
+    vidaInicial: 200,
+    misilesIniciales: 50,
+    descripcion: 'Agresivo. Parte de la Tríada Elemental.',
+    habilidad: 'Daño x2 a Planta. Daño x0.5 a Agua.'
+  },
+  'Agua': {
+    vidaInicial: 200,
+    misilesIniciales: 50,
+    descripcion: 'Fluido. Parte de la Tríada Elemental.',
+    habilidad: 'Daño x2 a Fuego. Daño x0.5 a Planta.'
+  },
+  'Planta': {
+    vidaInicial: 200,
+    misilesIniciales: 50,
+    descripcion: 'Resistente. Parte de la Tríada Elemental.',
+    habilidad: 'Daño x2 a Agua. Daño x0.5 a Fuego.'
+  },
+  'Roca': {
+    vidaInicial: 400,
+    misilesIniciales: 20,
+    descripcion: 'Tanque pesado. Comienza lento y se mantiene constante.',
+    habilidad: '400 HP. Siempre 20 misiles por ronda.'
+  },
+  'Aire': {
+    vidaInicial: 100,
+    misilesIniciales: 50,
+    descripcion: 'Ágil y evasivo.',
+    habilidad: '100 HP. 50% Probabilidad de esquivar ataques.'
+  }
+};
+
 export function getPlanetImage(tipo: string): string {
   return PLANET_IMAGES[tipo] || 'images/planets/earth.png';
 }

@@ -12,6 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { Jugador, MensajeRonda, getPlanetImage } from '../../models';
 
+import { GameService } from '../../services/game.service';
+
 @Component({
   selector: 'app-panel-de-juego',
   standalone: true,
@@ -41,6 +43,13 @@ export class PanelDeJuego {
     planeta: { nombre: 'Tierra', tipo: 'Normal' },
     misilesDisponibles: 50
   };
+
+  constructor(private gameService: GameService) {
+    const player = this.gameService.getPlayer();
+    if (player) {
+      this.jugadorActual = player;
+    }
+  }
 
   enemigos: Jugador[] = [
     {
@@ -121,7 +130,6 @@ export class PanelDeJuego {
     const totalMisilesAtaque = Object.values(this.ataques).reduce((total, ataque) => total + ataque.misiles, 0);
 
     if (totalMisilesAtaque > this.jugadorActual.misilesDisponibles) {
-      // Manejar el error, por ejemplo, con un mensaje en la UI
       this.mensajesRonda.push({ texto: 'Error: No tienes suficientes misiles para este ataque.', tipo: 'warning' });
       return;
     }
@@ -135,16 +143,26 @@ export class PanelDeJuego {
       if (ataque.misiles > 0) {
         const enemigo = this.enemigos.find(e => e.nombre === nombreEnemigo);
         if (enemigo) {
-          // Lógica simple de daño
-          const danio = ataque.misiles * 2; // Cada misil hace 2 de daño (ejemplo)
-          const estabaVivo = enemigo.vida > 0;
-          enemigo.vida -= danio;
-          this.mensajesRonda.push({ texto: `Ataque a <b>${nombreEnemigo}</b>: Impacto de <b>${ataque.misiles}</b> misiles (<span style="color: #ff79c6">-${danio} HP</span>).`, tipo: 'success' });
-          this.showDamage(nombreEnemigo, danio);
+          const impacto = this.calcularDanio(this.jugadorActual.planeta.tipo, enemigo.planeta.tipo, ataque.misiles);
 
-          if (estabaVivo && enemigo.vida <= 0) {
-            enemigo.vida = 0; // Ensure health doesn't go below 0 visually
-            this.mensajesRonda.push({ texto: `¡<b>${nombreEnemigo}</b> ha sido ELIMINADO de la galaxia!`, tipo: 'danger' });
+          if (impacto.esquivado) {
+            this.mensajesRonda.push({ texto: `Ataque a <b>${nombreEnemigo}</b>: ¡ESQUIVADO! (Probabilidad de Aire)`, tipo: 'info' });
+            this.showDamage(nombreEnemigo, 0);
+          } else {
+            const estabaVivo = enemigo.vida > 0;
+            enemigo.vida -= impacto.danio;
+
+            let detalleEfectividad = '';
+            if (impacto.multiplicador > 1) detalleEfectividad = ' (¡Es muy efectivo! x2)';
+            if (impacto.multiplicador < 1) detalleEfectividad = ' (No es muy efectivo... x0.5)';
+
+            this.mensajesRonda.push({ texto: `Ataque a <b>${nombreEnemigo}</b>: Impacto de <b>${ataque.misiles}</b> misiles (<span style="color: #ff79c6">-${impacto.danio} HP</span>)${detalleEfectividad}.`, tipo: 'success' });
+            this.showDamage(nombreEnemigo, impacto.danio);
+
+            if (estabaVivo && enemigo.vida <= 0) {
+              enemigo.vida = 0;
+              this.mensajesRonda.push({ texto: `¡<b>${nombreEnemigo}</b> ha sido ELIMINADO de la galaxia!`, tipo: 'danger' });
+            }
           }
         }
       }
@@ -153,10 +171,53 @@ export class PanelDeJuego {
     // Resetear ataques para la siguiente ronda
     Object.keys(this.ataques).forEach(key => this.ataques[key].misiles = 0);
 
-    // Resetear misiles del jugador
-    this.jugadorActual.misilesDisponibles = 50;
+    // Resetear/Escalar misiles del jugador
+    if (this.jugadorActual.planeta.tipo === 'Roca') {
+      this.jugadorActual.misilesDisponibles = 20;
+      this.mensajesRonda.push({ texto: `[ROCA] Misiles recargados a ${this.jugadorActual.misilesDisponibles}.`, tipo: 'info' });
+    } else {
+      this.jugadorActual.misilesDisponibles = 50;
+    }
 
     this.numeroRonda++;
+  }
+
+  calcularDanio(tipoAtacante: string, tipoDefensor: string, cantidadMisiles: number): { danio: number, multiplicador: number, esquivado: boolean } {
+    // 1. Check Dodge (Aire)
+    if (tipoDefensor === 'Aire') {
+      // 50% chance to dodge
+      if (Math.random() < 0.5) {
+        return { danio: 0, multiplicador: 0, esquivado: true };
+      }
+    }
+
+    // 2. Elemental Triad
+    let multiplicador = 1;
+
+    if (tipoAtacante === 'Fuego') {
+      if (tipoDefensor === 'Planta') multiplicador = 2;
+      if (tipoDefensor === 'Agua') multiplicador = 0.5;
+    } else if (tipoAtacante === 'Agua') {
+      if (tipoDefensor === 'Fuego') multiplicador = 2;
+      if (tipoDefensor === 'Planta') multiplicador = 0.5;
+    } else if (tipoAtacante === 'Planta') {
+      if (tipoDefensor === 'Agua') multiplicador = 2;
+      if (tipoDefensor === 'Fuego') multiplicador = 0.5;
+    }
+    // Rojo/Azul/Verde mapping from prompt?
+    // "Rojo vs Verde", "Azul vs Rojo".
+    // Assuming Fuego=Rojo, Agua=Azul, Planta=Verde based on color logic.
+    // The prompt explicitly said: "Rojo Contra Verde", "Azul Contra Rojo", "Verde Contra Azul".
+    // Let's stick to standard Pokemon Fuego/Agua/Planta logic which is also in the prompt ("Similar a los tipos de Pokemon").
+    // Re-reading prompt: "Rojo Contra Verde" (Red vs Green -> Fire vs Plant? Usually Fire burns Plant).
+    // "Azul Contra Rojo" (Blue vs Red -> Water vs Fire).
+    // "Verde Contra Azul" (Green vs Blue -> Plant vs Water).
+    // My Implementation: Fuego(Red) > Planta(Green); Agua(Blue) > Fuego(Red); Planta(Green) > Agua(Blue).
+    // Matches prompt perfectly.
+
+    // Base damage is 1 per missile
+    const danioBase = cantidadMisiles * 1;
+    return { danio: Math.floor(danioBase * multiplicador), multiplicador, esquivado: false };
   }
 
   agregarEnemigo() {

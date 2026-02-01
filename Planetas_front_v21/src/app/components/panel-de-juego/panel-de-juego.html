@@ -54,15 +54,33 @@
             </div>
           </mat-card-header>
           <mat-card-content>
+            <div style="display: flex; justify-content: center; gap: 40px;">
+              <!-- Available Missiles -->
+              <div>
+                <div class="missile-controls-header">
+                  <mat-icon class="label-icon" style="color: #ffb86c;">token</mat-icon>
+                  <span class="control-label" style="color: #ffb86c;">MISILES DISPONIBLES</span>
+                </div>
+                <div class="missile-controls">
+                  <div class="tech-input-number"
+                    style="display: flex; align-items: center; justify-content: center; cursor: default; border-color: #ffb86c; color: #ffb86c; box-shadow: inset 0 0 10px rgba(255, 184, 108, 0.2);">
+                    {{ misilesRestantes }}
+                  </div>
+                </div>
+              </div>
 
-            <div class="missile-controls-header">
-              <mat-icon class="label-icon">shield</mat-icon>
-              <span class="control-label">MISILES A DEFENSA </span>
-            </div>
-            <div class="missile-controls">
-              <div class="tech-input-number"
-                style="display: flex; align-items: center; justify-content: center; cursor: default;">
-                {{ misilesDefensa }}
+              <!-- Defense Missiles -->
+              <div>
+                <div class="missile-controls-header">
+                  <mat-icon class="label-icon">shield</mat-icon>
+                  <span class="control-label">DEFENSA</span>
+                </div>
+                <div class="missile-controls">
+                  <div class="tech-input-number"
+                    style="display: flex; align-items: center; justify-content: center; cursor: default;">
+                    {{ misilesDefensa }}
+                  </div>
+                </div>
               </div>
             </div>
           </mat-card-content>
@@ -133,7 +151,7 @@
       </div>
 
       <div class="action-buttons">
-        <button mat-flat-button class="btn-cyan" (click)="agregarEnemigo()" [disabled]="enemigos.length > 9">
+        <button mat-flat-button class="btn-cyan" (click)="agregarEnemigo()" [disabled]="enemigos.length >= 8">
           <mat-icon>person_add</mat-icon> AÑADIR JUGADOR
         </button>
         <button mat-flat-button class="btn-orange" (click)="lanzarAtaque()">LANZAR MISILES</button>

@@ -1,0 +1,255 @@
+:host {
+    font-family: 'Exo 2', sans-serif;
+    display: block;
+    height: 100vh;
+    width: 100%;
+}
+
+.planet-selection-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('/images/fondo.png') no-repeat center center;
+    background-size: cover;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.selection-card {
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(10, 25, 47, 0.9);
+    border: 1px solid #00ffff;
+    backdrop-filter: blur(15px);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.cyan-glow {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 5px rgba(0, 255, 255, 0.1) inset;
+}
+
+.tech-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.tech-subtitle {
+    color: #b0c4de;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.cyan-text {
+    color: #00ffff !important;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    /* Side by side on desktop */
+    gap: 40px;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.planet-preview {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.planet-display-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.planet-icon {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+    z-index: 2;
+}
+
+.orbit-ring {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border: 1px dashed rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: spin 20s linear infinite;
+    z-index: 1;
+}
+
+.form-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.tech-input {
+    width: 100%;
+}
+
+::ng-deep .tech-input .mat-mdc-text-field-wrapper {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 4px 4px 0 0;
+}
+
+::ng-deep .tech-input .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(0, 255, 255, 0.05) !important;
+}
+
+::ng-deep .tech-input .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #8be9fd !important;
+}
+
+::ng-deep .tech-input .mat-mdc-input-element,
+::ng-deep .tech-input .mat-mdc-select-value {
+    color: #ffffff !important;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.1rem;
+}
+
+::ng-deep .mat-mdc-select-arrow {
+    color: #00ffff !important;
+}
+
+.btn-cyan {
+    background-color: rgba(0, 255, 255, 0.15) !important;
+    color: #00ffff !important;
+    border: 1px solid #00ffff !important;
+    font-family: 'Orbitron', sans-serif !important;
+    letter-spacing: 1px;
+    padding: 24px 32px !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease;
+}
+
+.btn-cyan:hover:not(:disabled) {
+    background-color: rgba(0, 255, 255, 0.3) !important;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.btn-cyan:disabled {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Animations */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .planet-display-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .planet-icon {
+        width: 130px;
+        height: 130px;
+    }
+
+    .orbit-ring {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* Planet Stats Info Styles */
+.planet-stats-info {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+    font-family: 'Exo 2', sans-serif;
+}
+
+.info-title {
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.info-desc {
+    color: #c7d8f2;
+    font-size: 0.9rem;
+    margin: 0 0 10px 0;
+    font-style: italic;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 3px;
+}
+
+.stat-label {
+    color: #8be9fd;
+    font-weight: bold;
+}
+
+.stat-value {
+    color: #ffffff;
+}
+
+.ability-row {
+    flex-direction: column;
+    border-bottom: none;
+    margin-top: 8px;
+}
+
+.stat-value.highlight {
+    color: #ffb86c;
+    /* Orange/Gold for special abilities */
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
