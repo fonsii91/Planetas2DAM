@@ -1,0 +1,32 @@
+<div class="auth-page-wrapper">
+    <mat-card class="battle-card cyan-glow">
+        <mat-card-header>
+            <mat-card-title class="tech-title cyan-text">INICIO DE SESIÓN</mat-card-title>
+            <mat-card-subtitle class="tech-subtitle">Identifícate Comandante</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="battle-form">
+                
+                <mat-form-field appearance="outline">
+                    <mat-label>Nickname</mat-label>
+                    <input matInput formControlName="nickname" placeholder="Tu alias de combate">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" formControlName="password" placeholder="Tu código secreto">
+                </mat-form-field>
+
+                <button mat-flat-button class="btn-cyan" type="submit" [disabled]="loginForm.invalid">
+                    ENTRAR AL SISTEMA
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <span style="color: rgba(255,255,255,0.7)">¿No tienes credenciales? </span>
+                <a routerLink="/register" class="link-cyan">Registrar Nuevo Comandante</a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
