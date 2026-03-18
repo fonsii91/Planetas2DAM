@@ -12,18 +12,18 @@ Juego de combate táctico entre equipos (planetas) basada en la gestión estrat�
 
 ## 2. Pila Tecnológica (Stack)
 ### Frontend (`planetas_front/`)
-- **Framework/Librería:** Angular 18+
-- **Estilos:** CSS, SCSS
-- **Otras herramientas:** 
+- **Framework/Librería:** Angular 21
+- **Estilos:** CSS, SCSS (Angular Material)
+- **Otras herramientas:** RxStomp (WebSockets), Vitest
 
 ### Backend (`planetas_back/`)
-- **Lenguaje/Framework:** Spring Boot
-- **Otros:** 
+- **Lenguaje/Framework:** Node.js, Express.js
+- **Otros:** Socket.io, JWT, Axios
 
 ### API (`planetas_API/`)
-- **Framework/Librería:** Spring Boot
-- **Base de Datos:** MySQL, MongoDB
-- **Otros:** 
+- **Framework/Librería:** Spring Boot (Java 20)
+- **Base de Datos:** MySQL (local puerto 3307), MongoDB (Atlas Cloud)
+- **Otros:** Spring Security, JWT, Lombok, Spring Data JPA
 
 ### Comunicación entre servicios
 - **planetas_back** se comunica con **planetas_API** a través de una API REST.
