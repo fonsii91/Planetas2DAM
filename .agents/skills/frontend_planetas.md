@@ -13,7 +13,7 @@ Este archivo documenta la tecnología y estructura del frontend, ubicado en el d
 - **Lenguaje:** TypeScript (v5.9.2)
 - **Estilos y UI:** Angular Material (v21.1.2), SCSS (`material-theme.scss`) y CSS (`styles.css`)
 - **Testing:** Vitest (v4.0.8) y jsdom (sustituyendo a Karma/Jasmine)
-- **Comunicaciones:** `@stomp/rx-stomp` para mensajería asíncrona y WebSockets.
+- **Comunicaciones:** `HttpClient` (con REST) para autenticación, y `socket.io-client` para conexiones de WebSocket en tiempo real.
 
 ## Arquitectura y Estructura (`src/app/`)
 
@@ -29,5 +29,5 @@ Se utiliza además una nomenclatura moderna o personalizada para los archivos (`
 ## Reglas de Desarrollo
 
 1. **Angular Moderno (v18+):** El proyecto asume el uso completo de Angular en sus últimas versiones, exigiendo el uso de Standalone Components, el paradigma reactivo usando **Signals**, y el nuevo sistema **Control Flow** (`@if`, `@for`, etc.) para las plantillas.
-2. **WebSockets con STOMP:** Las comunicaciones de tiempo real se esperan a través del protocolo STOMP usando `rx-stomp`, lo cual es distinto de usar `socket.io-client` puro, asegurando integraciones robustas de mensajería (probablemente contra Spring Boot o un message broker).
+2. **WebSockets con Socket.IO:** Las comunicaciones de tiempo real se realizan usando `socket.io-client` adaptándose a la tecnología expuesta por `planetas_back`. Anteriormente se usaba STOMP, pero se ha migrado para tener interoperabilidad perfecta con el backend de Node/Express. La autenticación se realiza por HTTP REST convencional.
 3. **Testing Veloz:** Los tests unitarios deben ejecutarse usando `vitest`, lo que implica un entorno de ejecución en Node más rápido simulando el DOM con `jsdom`.

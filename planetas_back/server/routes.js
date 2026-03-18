@@ -5,7 +5,7 @@ import  { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router(); // <--- Aquí se inicializa
-const backendToken =''; // Aquí podrías almacenar un token de autenticación si el microservicio lo requiere
+let backendToken =''; // Aquí podrías almacenar un token de autenticación si el microservicio lo requiere
 
 // Definimos las reglas de limpieza/validación
 const loginValidation = [
@@ -56,8 +56,9 @@ router.all('/auth/login',loginValidation, // 1. Limpia y valida el body
     );
 
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Login Error:', err.response?.data || err.message);
+    const status = err.response?.status || 500;
+    res.status(status).json(err.response?.data || { msg: 'Server error' });
   }
  
 });
@@ -94,7 +95,6 @@ router.all('/auth/register', registerValidation, // 1. Limpia y valida el body
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     next();
   },
-  verifyToken, 
   async (req, res) =>{
   console.log('Register request received', req.body);
   try {
@@ -111,8 +111,9 @@ router.all('/auth/register', registerValidation, // 1. Limpia y valida el body
     res.status(200).json({ msg: 'User registered successfully' });
 
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Register Error:', err.response?.data || err.message);
+    const status = err.response?.status || 500;
+    res.status(status).json(err.response?.data || { msg: 'Server error' });
   }
 });
 

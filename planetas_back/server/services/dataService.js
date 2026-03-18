@@ -10,8 +10,9 @@ const obtenerHeadersAutenticacion = (token) => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  const finalToken = token || JWT_SECRET;
+  if (finalToken) {
+    headers['Authorization'] = `Bearer ${finalToken}`;
   }
   return headers;
 };
@@ -44,7 +45,15 @@ export const loginToExternalApi = async (nickname, password) => {
 export const registerToExternalApi = async (userData, token) => {
   try {
     const headers = obtenerHeadersAutenticacion(token);
-    const response = await axios.post(`${AUTH_API_URL}/api/auth/register`, userData, { headers });
+    // Java expects "nombre", but Node receives "name"
+    const payloadForJava = {
+      nombre: userData.name,
+      apellidos: userData.apellidos,
+      nickname: userData.nickname,
+      password: userData.password,
+      email: userData.email
+    };
+    const response = await axios.post(`${AUTH_API_URL}/api/usuarios`, payloadForJava, { headers });
     return response.data;
   } catch (error) {
     throw error;

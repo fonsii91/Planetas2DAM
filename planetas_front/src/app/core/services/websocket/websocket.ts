@@ -1,72 +1,95 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { RxStomp, RxStompState } from '@stomp/rx-stomp';
+import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
-  private rxStomp = new RxStomp();
+  private socket?: Socket;
 
   // Angular Core Signals holding the WebSocket status
-  private connectionStateSignal = signal<RxStompState>(RxStompState.CLOSED);
+  private connectionStateSignal = signal<boolean>(false);
 
   // Computadas para exponer a los componentes
-  public isConnected = computed(() => this.connectionStateSignal() === RxStompState.OPEN);
+  public isConnected = computed(() => this.connectionStateSignal());
   public connectionState = this.connectionStateSignal.asReadonly();
 
   constructor() {
-    this.setupStompConfig();
-    this.rxStomp.activate();
-
-    // Reaccionar a cambios de estado del socket y actualizar señales
-    this.rxStomp.connectionState$.subscribe((state: RxStompState) => {
-      this.connectionStateSignal.set(state);
-      console.log('[WebSocketService] Estado WebSocket:', RxStompState[state]);
-    });
-  }
-
-  private setupStompConfig(): void {
-    this.rxStomp.configure({
-      brokerURL: 'ws://localhost:8091/ws',
-      
-      // Heartbeat configuration para mantener viva la conexión
-      heartbeatIncoming: 0, 
-      heartbeatOutgoing: 20000,
-
-      // Intentar reconectar automáticamente pasados unos ms.
-      reconnectDelay: 5000,
-      
-      // Opcionalmente definir configuración de debug en desarrollo:
-      debug: (msg: string): void => {
-        // Descomentar para debug agresivo 
-        // console.log(new Date(), msg);
-      },
-    });
   }
 
   /**
-   * Suscribe al cliente a una "Destination" STOMP. Devuelve un bucle observable.
-   * Por ejemplo la cola del usuario para el auth response: '/user/queue/auth-response'
+   * Conecta el socket al backend proporcionando el token JWT.
    */
-  public watch(destination: string): Observable<any> {
-    return this.rxStomp.watch(destination);
-  }
-
-  /**
-   * Enviar un mensaje STOMP (Payload en JSON) a un endpoint
-   */
-  public publish(destination: string, targetBody: any): void {
-    if(!this.isConnected()){
-      console.warn('[WebSocketService] Intentando publicar pero el socket no está conectado.');
+  public connect(token: string): void {
+    if (this.socket) {
+      this.socket.disconnect();
     }
-    this.rxStomp.publish({ destination, body: JSON.stringify(targetBody) });
+    
+    this.socket = io('http://localhost:3500', {
+      auth: { token },
+      transports: ['websocket', 'polling']
+    });
+
+    this.socket.on('connect', () => {
+      this.connectionStateSignal.set(true);
+      console.log('[WebSocketService] Estado WebSocket: Conectado');
+    });
+
+    this.socket.on('disconnect', () => {
+      this.connectionStateSignal.set(false);
+      console.log('[WebSocketService] Estado WebSocket: Desconectado');
+    });
+
+    this.socket.on('connect_error', (err) => {
+      console.error('[WebSocketService] Error de conexión:', err.message);
+    });
   }
 
   /**
-   * Cierra ordenadamente la conexión
+   * Suscribe al cliente a un evento específico de socket.io. Devuelve un observable.
    */
-  public deactivate(): void {
-    this.rxStomp.deactivate();
+  public watch(eventName: string): Observable<any> {
+    return new Observable((subscriber) => {
+      if (!this.socket) {
+        subscriber.error('Socket no está inicializado. Llama a connect() primero.');
+        return;
+      }
+      
+      const listener = (data: any) => {
+        subscriber.next(data);
+      };
+
+      this.socket.on(eventName, listener);
+
+      return () => {
+        if (this.socket) {
+          this.socket.off(eventName, listener);
+        }
+      };
+    });
+  }
+
+  /**
+   * Enviar un mensaje (evento) usando socket.io
+   */
+  public publish(eventName: string, payload: any): void {
+    if (!this.isConnected()) {
+      console.warn('[WebSocketService] Intentando emitir pero el socket no está conectado.');
+    }
+    if (this.socket) {
+      this.socket.emit(eventName, payload);
+    }
+  }
+
+  /**
+   * Desconecta el socket
+   */
+  public disconnect(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = undefined;
+    }
+    this.connectionStateSignal.set(false);
   }
 }

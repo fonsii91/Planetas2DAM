@@ -1,7 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { WebsocketService } from '../websocket/websocket';
-import { filter, map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 export interface UserSession {
   id: number;
@@ -13,6 +12,7 @@ export interface UserSession {
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
   private wsService = inject(WebsocketService);
 
   // Signals (Almacén de estado reactivo)
@@ -21,59 +21,70 @@ export class AuthService {
   public user = this.sessionSignal.asReadonly();
   public isLoggedIn = computed(() => this.sessionSignal() !== null);
 
-  private authSubscription?: Subscription;
-
   constructor() {
-    // Al intentar recuperar del LocalStorage (Estado Inseguro pero persistente frente a refresh)
+    // Recuperar del LocalStorage
     const stored = localStorage.getItem('usuario_sesion');
     if (stored) {
       try {
-        this.sessionSignal.set(JSON.parse(stored));
+        const session = JSON.parse(stored);
+        this.sessionSignal.set(session);
+        // Si hay un token también lo podríamos conectar aquí al websocket
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+            this.wsService.connect(token);
+        }
       } catch (e) {
         localStorage.removeItem('usuario_sesion');
+        localStorage.removeItem('auth_token');
       }
     }
-
-    // Suscribirnos al buzón de respuestas del WebSocket para Auth
-    this.setupAuthListener();
   }
 
-  private setupAuthListener(): void {
-    // Escucha todo lo proveniente del servidor destinado exclusivamente a nuestro Client ID 
-    // (/user lo maneja Spring STOMP dinámicamente)
-    this.authSubscription = this.wsService.watch('/user/queue/auth-response')
-      .pipe(
-        map(message => JSON.parse(message.body))
-      )
-      .subscribe((response) => {
-        if (response.error) {
-          console.error('[AuthService] Error de autenticación:', response.error);
-          alert('Error de autencicación: ' + response.error);
-          // Opcionalmente exponer un signal para los errores y leerlos en el login
-        } else {
-          console.log('[AuthService] Sesión capturada!');
-          const session: UserSession = {
-            id: response.id,
-            nickname: response.nickname,
-            monedas: response.monedas
-          };
-          this.sessionSignal.set(session);
-          localStorage.setItem('usuario_sesion', JSON.stringify(session));
+  public login(credentials: { name: string, password: string }): void {
+    this.http.post<any>('http://localhost:3500/api/auth/login', credentials)
+      .subscribe({
+        next: (response) => {
+          console.log('[AuthService] Login exitoso', response);
+          if (response.token && response.user) {
+            const session: UserSession = {
+              id: response.user.id,
+              nickname: response.user.nickname,
+              monedas: response.user.monedas
+            };
+            this.sessionSignal.set(session);
+            localStorage.setItem('usuario_sesion', JSON.stringify(session));
+            localStorage.setItem('auth_token', response.token);
+            
+            // Conectar WebSockets con el token
+            this.wsService.connect(response.token);
+          }
+        },
+        error: (err) => {
+          console.error('[AuthService] Error de autenticación:', err);
+          alert('Error de autenticación: ' + (err.error?.msg || 'Revisa tus credenciales.'));
         }
       });
   }
 
-  public login(credentials: { nickname: string, password: string }): void {
-    this.wsService.publish('/app/auth/login', credentials);
-  }
-
-  public register(credentials: { nickname: string, password: string }): void {
-    this.wsService.publish('/app/auth/register', credentials);
+  public register(user: { name: string, apellidos: string, nickname: string, password: string, email: string }): void {
+    this.http.post<any>('http://localhost:3500/api/auth/register', user)
+      .subscribe({
+        next: (response) => {
+          console.log('[AuthService] Registro exitoso', response);
+          alert('Registro exitoso. Ahora puedes iniciar sesión.');
+          // Idealmente, redirigir al login usando el Router desde el componente
+        },
+        error: (err) => {
+          console.error('[AuthService] Error de registro:', err);
+          alert('Error de registro: ' + (err.error?.msg || 'Revisa los datos.'));
+        }
+      });
   }
 
   public logout(): void {
     this.sessionSignal.set(null);
     localStorage.removeItem('usuario_sesion');
-    // Se podría notificar al backend si fuera necesario gestionar cierre en tiempo real
+    localStorage.removeItem('auth_token');
+    this.wsService.disconnect();
   }
 }

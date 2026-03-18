@@ -28,8 +28,11 @@ export class RegisterComponent {
   private router = inject(Router);
 
   registerForm = this.fb.nonNullable.group({
-    nickname: ['', Validators.required],
-    password: ['', [Validators.required, Validators.minLength(4)]]
+    name: ['', [Validators.required, Validators.pattern('.*\\S+.*')]],
+    apellidos: ['', [Validators.required, Validators.pattern('.*\\S+.*')]],
+    nickname: ['', [Validators.required, Validators.pattern('.*\\S+.*')]],
+    email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$')]],
+    password: ['', [Validators.required, Validators.pattern('.*\\S+.*'), Validators.minLength(4)]]
   });
 
   constructor() {
@@ -45,7 +48,10 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const formValue = this.registerForm.getRawValue();
       const payload = {
+          name: formValue.name,
+          apellidos: formValue.apellidos,
           nickname: formValue.nickname,
+          email: formValue.email,
           password: formValue.password
       };
       this.authService.register(payload);
