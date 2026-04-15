@@ -14,7 +14,7 @@ Juego de combate táctico entre equipos (planetas) basada en la gestión estrat�
 ### Frontend (`planetas_front/`)
 - **Framework/Librería:** Angular 21
 - **Estilos:** CSS, SCSS (Angular Material)
-- **Otras herramientas:** RxStomp (WebSockets), Vitest
+- **Otras herramientas:** ??? (WebSockets)
 
 ### Backend (`planetas_back/`)
 - **Lenguaje/Framework:** Node.js, Express.js
