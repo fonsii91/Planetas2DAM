@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1776434938526,
+  "timestamp": 1776435191333,
   "index": "/Planetas2DAM/index.html",
   "assetGroups": [
     {
@@ -23,7 +23,6 @@
         "/Planetas2DAM/chunk-KQZ37NSQ.js",
         "/Planetas2DAM/chunk-L5BJ6QN3.js",
         "/Planetas2DAM/chunk-M3YZFLNW.js",
-        "/Planetas2DAM/chunk-M5GTUAZB.js",
         "/Planetas2DAM/chunk-MFGOYSXG.js",
         "/Planetas2DAM/chunk-OA5AHDBL.js",
         "/Planetas2DAM/chunk-OCYRZHVV.js",
@@ -31,12 +30,13 @@
         "/Planetas2DAM/chunk-RP4GWN2G.js",
         "/Planetas2DAM/chunk-SBCHTMRK.js",
         "/Planetas2DAM/chunk-SER7VBRE.js",
+        "/Planetas2DAM/chunk-SREST42Y.js",
         "/Planetas2DAM/chunk-VT237ME3.js",
         "/Planetas2DAM/chunk-XVDV3GHI.js",
         "/Planetas2DAM/chunk-ZRJXPKKY.js",
         "/Planetas2DAM/favicon.ico",
         "/Planetas2DAM/index.html",
-        "/Planetas2DAM/main-GQ4BUZF5.js",
+        "/Planetas2DAM/main-IK5D2HUG.js",
         "/Planetas2DAM/manifest.webmanifest",
         "/Planetas2DAM/styles-7OAEIJVF.css"
       ],
@@ -91,7 +91,6 @@
     "/Planetas2DAM/chunk-KQZ37NSQ.js": "96c1fe10f8045e9e89de199300c851d5862e2425",
     "/Planetas2DAM/chunk-L5BJ6QN3.js": "bb8ff33bd40eaf43f1e58aba228f021ad9d28a33",
     "/Planetas2DAM/chunk-M3YZFLNW.js": "82cb86a9ece62990c565109defbd1e3d9515065c",
-    "/Planetas2DAM/chunk-M5GTUAZB.js": "213447038714ea48548d4930c5745d73bbe21518",
     "/Planetas2DAM/chunk-MFGOYSXG.js": "843c1975f4b7101613171e98f3553bb605f7eea7",
     "/Planetas2DAM/chunk-OA5AHDBL.js": "9205e85865a8d859176c22964570efec319af02b",
     "/Planetas2DAM/chunk-OCYRZHVV.js": "2cd9a491846c07eb29aa9a9ab02c6d75c392883a",
@@ -99,6 +98,7 @@
     "/Planetas2DAM/chunk-RP4GWN2G.js": "67980ff82c567ba3062cea6a1b31aab0aed055f4",
     "/Planetas2DAM/chunk-SBCHTMRK.js": "07904ae3ebcecbf899cca0d960f86b2a1d0b454d",
     "/Planetas2DAM/chunk-SER7VBRE.js": "7a46dc995358aac1ba2d7526765b5462ef1194c0",
+    "/Planetas2DAM/chunk-SREST42Y.js": "a43cc6921714993c235a143c226f6316aac737e8",
     "/Planetas2DAM/chunk-VT237ME3.js": "6731c5519cc0ad5aed799bf99acc476c2858a53d",
     "/Planetas2DAM/chunk-XVDV3GHI.js": "79574d2eac9933bddb18fce38bf5e9e2f6b048ad",
     "/Planetas2DAM/chunk-ZRJXPKKY.js": "ba940ad8f1b6162494e1180e3666fe69f370a842",
@@ -125,8 +125,8 @@
     "/Planetas2DAM/images/planets/rock.png": "d8344f3d2fa850e0595306080d95988d957e73e3",
     "/Planetas2DAM/images/planets/rock2.png": "833c0836954ffb8639524aa40feec1e91fafcdaf",
     "/Planetas2DAM/images/planets/water.png": "faf7bec6d75e48329960181408866e675daa08dc",
-    "/Planetas2DAM/index.html": "374b31dd3c2c36a778fc2523c48818f6499fcbb7",
-    "/Planetas2DAM/main-GQ4BUZF5.js": "dd942006f3eccc2af7a9fa60745ef6893da0e0d2",
+    "/Planetas2DAM/index.html": "76ac32ed5bc18a637efcbabb3724c24b3acf7571",
+    "/Planetas2DAM/main-IK5D2HUG.js": "e65d3be4743fbb6078f113fc07b05f8caee5bd92",
     "/Planetas2DAM/manifest.webmanifest": "7ea02e2ee92d238efd90f15c32b2529f4a1f5c71",
     "/Planetas2DAM/media/fondo-RBDOK2CQ.png": "92fd054901366f3ee64332e97e27d93ab8db37b8",
     "/Planetas2DAM/styles-7OAEIJVF.css": "98c6b8a126006f858cebc11b3f25c650d6e805ca"
