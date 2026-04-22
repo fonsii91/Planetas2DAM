@@ -30,6 +30,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/explicacion-sockets/explicacion-sockets').then(m => m.ExplicacionSocketsComponent)
   },
   {
+    path: 'explicacion-sockets-spring',
+    loadComponent: () => import('./components/explicacion-sockets-spring/explicacion-sockets-spring').then(m => m.ExplicacionSocketsSpringComponent)
+  },
+  {
     path: 'explicacion-http',
     loadComponent: () => import('./components/explicacion-http/explicacion-http').then(m => m.ExplicacionHttpComponent)
   },
