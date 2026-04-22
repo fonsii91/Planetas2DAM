@@ -25,6 +25,14 @@ export const routes: Routes = [
     path: 'panel-de-juego',
     loadComponent: () => import('./components/panel-de-juego/panel-de-juego').then(m => m.PanelDeJuego)
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  {
+    path: 'explicacion-sockets',
+    loadComponent: () => import('./components/explicacion-sockets/explicacion-sockets').then(m => m.ExplicacionSocketsComponent)
+  },
+  {
+    path: 'explicacion-http',
+    loadComponent: () => import('./components/explicacion-http/explicacion-http').then(m => m.ExplicacionHttpComponent)
+  },
+  { path: '', redirectTo: 'explicacion-http', pathMatch: 'full' },
+  { path: '**', redirectTo: 'explicacion-sockets' }
 ];

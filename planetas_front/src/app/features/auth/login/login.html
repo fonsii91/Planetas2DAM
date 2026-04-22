@@ -1,4 +1,10 @@
-<div class="auth-page-wrapper">
+<div class="auth-page-wrapper" style="position: relative;">
+    <mat-toolbar style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(13, 20, 28, 0.9); border-bottom: 2px solid #00f2ff; margin-bottom: 2rem; z-index: 10; gap: 10px;">
+        <span class="cyan-text" style="font-weight: bold; margin-right: auto; letter-spacing: 2px;">Planetas2DAM</span>
+        <button mat-button routerLink="/explicacion-http" class="green-text" style="border: 1px solid rgba(105, 240, 174, 0.5); border-radius: 4px; color: #69f0ae;">Explicación HTTP REST</button>
+        <button mat-button routerLink="/explicacion-sockets" class="cyan-text" style="border: 1px solid rgba(0, 242, 255, 0.5); border-radius: 4px;">Explicación de Sockets</button>
+    </mat-toolbar>
+
     <mat-card class="battle-card cyan-glow">
         <mat-card-header>
             <mat-card-title class="tech-title cyan-text">INICIO DE SESIÓN</mat-card-title>

@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../core/services/auth/auth';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,7 +18,8 @@ import { AuthService } from '../../../core/services/auth/auth';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule
   ],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
