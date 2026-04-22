@@ -177,12 +177,31 @@ interface LogEntry {
 
             <div class="step-card" [ngClass]="{'locked': step() < 3}">
                <div class="step-header">
+                 <h4>Paso 5B: El Portero (JwtFilter)</h4>
+                 <button mat-icon-button class="green-text" (click)="openInfo(infoFilter)"><mat-icon>help_outline</mat-icon></button>
+               </div>
+               <p style="font-size: 0.85rem; color: #aaa;">El simétrico del Interceptor. Extrae la pulsera de la cabecera HTTP entrante y verifica la firma criptográfica.</p>
+               <div class="code-header green"><mat-icon style="font-size: 14px; width: 14px; height: 14px; margin-right: 5px;">description</mat-icon> planetas_API/src/.../config/JwtAuthFilter.java</div>
+               <pre class="code-block green" style="margin-bottom: 10px;">{{ codeBackFilter }}</pre>
+            </div>
+
+            <div class="step-card" [ngClass]="{'locked': step() < 3}">
+               <div class="step-header">
                  <h4>Paso 6: Validar en Rutas Protegidas</h4>
                  <button mat-icon-button color="warn" (click)="openInfo(infoInterceptor)"><mat-icon>help_outline</mat-icon></button>
                </div>
                <p style="font-size: 0.85rem; color: #aaa;">Cuando pides entrar a la zona VIP de planetas, Spring Boot lee el "sello" sin tener que volver a consultar MySQL.</p>
                <div class="code-header green"><mat-icon style="font-size: 14px; width: 14px; height: 14px; margin-right: 5px;">description</mat-icon> planetas_API/src/main/java/.../config/SecurityConfig.java</div>
                <pre class="code-block green">{{ codeBackProtect }}</pre>
+            </div>
+
+            <div class="step-card" [ngClass]="{'locked': step() < 3}">
+               <div class="step-header">
+                 <h4>Paso 7: Controlador Protegido</h4>
+               </div>
+               <p style="font-size: 0.85rem; color: #aaa;">Si el filtro acepta el token, la petición llega a este controlador para devolver los datos.</p>
+               <div class="code-header green"><mat-icon style="font-size: 14px; width: 14px; height: 14px; margin-right: 5px;">description</mat-icon> planetas_API/src/main/java/.../controllers/PlanetasController.java</div>
+               <pre class="code-block green">{{ codeBackController }}</pre>
             </div>
 
             <div class="step-card" [ngClass]="{'locked': step() < 3}">
@@ -244,6 +263,19 @@ interface LogEntry {
               A partir de ahí, ni el camarero ni el salvavidas consultan la base de datos: solo miran tu pulsera porque ven que lleva la <b>Firma Criptográfica (algoritmo HS256)</b> inalterable del hotel. Guardar el token en el LocalStorage es como esconder la pulsera en nuestra guantera para rehusarla.
             </p>
             <button mat-flat-button class="btn-cyan" mat-dialog-close style="width: 100%; margin-top: 15px;">¡Metáfora asimilada!</button>
+         </div>
+      </ng-template>
+
+      <ng-template #infoFilter>
+         <div class="dark-modal green-glow" style="border-color: #69f0ae;">
+            <h2 style="color: #69f0ae; font-size: 1.5rem; margin-top: 0;">El Portero del Club (JwtFilter) 🕶️</h2>
+            <p style="line-height: 1.6; color: #e0e0e0;">
+              Igual que en el frontend el Interceptor pegaba la pulsera a la fuerza, aquí en el servidor necesitamos un <b>Portero de Discoteca</b> que se ponga en la puerta de entrada de cada petición.
+            </p>
+            <p style="line-height: 1.6; color: #e0e0e0;">
+              El portero (<code>OncePerRequestFilter</code>) para a la petición, le mira la cabecera <code>Authorization</code>, comprueba criptográficamente que la pulsera JWT es auténtica y no está caducada. Si todo está bien, le pone un sello invisible (en el <code>SecurityContextHolder</code>) para que Spring Boot sepa que ese usuario está autenticado y le deje llegar al Controlador final.
+            </p>
+            <button mat-flat-button class="btn-green" mat-dialog-close style="width: 100%; margin-top: 15px;">Simetría perfecta</button>
          </div>
       </ng-template>
 
@@ -588,6 +620,27 @@ return ResponseEntity.ok(new AuthResponse(jwtGen));`;
   return next(req); // Viaja normal (como pordiosero sin login)
 };`;
 
+  codeBackFilter = `@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
+        // 1. Miramos si trae el sello en la cabecera
+        String authHeader = request.getHeader("Authorization");
+        
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7); // Quitamos "Bearer "
+            
+            // 2. Comprobamos la firma de la pulsera
+            if (jwtService.isTokenValid(token)) {
+                // 3. Le decimos a Spring: "Es VIP, déjalo pasar"
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+        // 4. Continuar la cadena (hacia el Controlador o bloquearlo)
+        chain.doFilter(request, response);
+    }
+}`;
+
   codeBackProtect = `@Override
 protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
@@ -632,6 +685,40 @@ public class CorsConfig implements WebMvcConfigurer {
            .allowedOrigins("http://localhost:4200") 
            .allowedMethods("GET", "POST", "PUT", "DELETE")
            .allowedHeaders("*"); // ¡Permite que Angular adjunte Tokens VIP!
+    }
+}`;
+
+  codeBackController = `@RestController
+@RequestMapping("/api/admin/planetas")
+public class PlanetasController {
+
+    @Autowired
+    private PlanetaService planetaService;
+
+    // Solo llega aquí si el filtro validó la pulsera VIP
+    // 1. GET: Obtener lista (Mapea con getPlanetas)
+    @GetMapping
+    public ResponseEntity<List<Planeta>> getPlanetas() {
+        return ResponseEntity.ok(planetaService.obtenerTodos());
+    }
+
+    // 2. POST: Crear planeta (Mapea con crearPlaneta)
+    @PostMapping
+    public ResponseEntity<Planeta> create(@RequestBody Planeta p) {
+        return ResponseEntity.ok(planetaService.crearPlaneta(p));
+    }
+
+    // 3. PUT: Actualizar planeta (Mapea con actualizarPlaneta)
+    @PutMapping("/{id}")
+    public ResponseEntity<Planeta> update(@PathVariable Long id, @RequestBody Planeta datos) {
+        return ResponseEntity.ok(planetaService.actualizarPlaneta(id, datos));
+    }
+
+    // 4. DELETE: Borrar planeta (Mapea con borrarPlaneta)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        planetaService.borrarPlaneta(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }`;
 
