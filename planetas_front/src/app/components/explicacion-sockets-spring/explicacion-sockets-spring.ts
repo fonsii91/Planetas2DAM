@@ -225,7 +225,7 @@ interface LogEntry {
               En una API REST normal, envías el token en cada petición. En WebSockets, la conexión es constante, por lo que <b>solo validamos el token una vez</b> durante el "Apretón de Manos" (Handshake) inicial.
             </p>
             <p style="line-height: 1.6; color: #e0e0e0;">
-              Para que Netty-SocketIO (Java) lea bien el token del cliente (Angular), lo pasamos como parámetro en la URL <code>query: &#123; token &#125;</code>.
+              Para que Netty-SocketIO (Java) lea bien el token del cliente, a menudo se usa la URL <code>query: &#123; token &#125;</code>, aunque en Socket.IO moderno se prefiere el payload <code>auth: &#123; token &#125;</code> para evitar logs en red.
             </p>
             <p style="line-height: 1.6; color: #e0e0e0;">
               El <b>AuthorizationListener</b> actúa como el "Portero de la Discoteca": si el JWT es válido, la conexión se queda abierta permanentemente. Si no, se rechaza y el cliente ni siquiera llega a conectarse.
@@ -413,7 +413,8 @@ export class ExplicacionSocketsSpringComponent {
   codePaso2 = `@Configuration
 public class SocketIOConfig {
 
-    @Value("\${socketio.host:localhost}")
+    // 0.0.0.0 para que funcione en contenedores y producción
+    @Value("\${socketio.host:0.0.0.0}")
     private String host;
 
     @Value("\${socketio.port:8085}")
@@ -424,7 +425,7 @@ public class SocketIOConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname(host);
         config.setPort(port);
-        // Permitir CORS a nivel global
+        // ⚠️ CORS abierto (*): Solo para desarrollo. En PROD usa "https://tudominio.com"
         config.setOrigin("*");
         return new SocketIOServer(config);
     }
@@ -480,19 +481,24 @@ import { Observable } from 'rxjs';
 export class WebsocketService {
   private socket!: Socket;
 
-  // 1. Inicializamos pasando el token a Socket.IO
+  // 1. Conexión segura (Usa WSS en producción)
   public conectar(token: string): void {
     this.socket = io('http://localhost:8085', {
-      query: { token }, // Forma amigable para netty-socketio
+      // ⚠️ Query params en URL se loguean. En Socket.IO v3+ prefiere usar:
+      // auth: { token } (si netty-socketio/backend lo soporta)
+      query: { token },
       transports: ['websocket']
     });
   }
 
-  // 2. Patrón Correcto: Envolver escucha en un Observable de RxJS
-  public listen(event: string): Observable<any> {
+  // 2. Patrón Correcto: Envolver escucha con Genéricos y Desuscripción segura
+  public listen<T>(event: string): Observable<T> {
     return new Observable((subscriber) => {
-      this.socket.on(event, (data) => subscriber.next(data));
-      return () => this.socket.off(event);
+      const handler = (data: T) => subscriber.next(data);
+      this.socket.on(event, handler);
+      
+      // ✅ IMPORTANTE: Pasamos el handler para no borrar otros listeners del mismo evento
+      return () => this.socket.off(event, handler);
     });
   }
 
@@ -502,8 +508,10 @@ export class WebsocketService {
   }
 }`;
 
-  codePaso5A = `export class JuegoComponent {
-  constructor(private wsService: WebsocketService) {}
+  codePaso5A = `import { inject } from '@angular/core';
+
+export class JuegoComponent {
+  private wsService = inject(WebsocketService); // Estilo moderno Angular
 
   lanzarAtaque() {
     // Emitimos el evento hacia el servidor Java
@@ -532,23 +540,24 @@ public class JuegoSocketController {
     }
 }`;
 
-  codePaso5C = `import { Component, OnInit, OnDestroy } from '@angular/core';
+  codePaso5C = `import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 export class PanelJuegoComponent implements OnInit, OnDestroy {
   private eventSub!: Subscription;
+  private wsService = inject(WebsocketService); // Estilo moderno Angular
   
-  constructor(private wsService: WebsocketService) {}
-
   ngOnInit() {
-    // Nos suscribimos al evento del servidor Netty
-    this.eventSub = this.wsService.listen('alerta_narrador')
+    // Escuchamos tipando la respuesta
+    this.eventSub = this.wsService.listen<{ mensaje: string }>('alerta_narrador')
       .subscribe((data) => {
-         alert("Notificación del Servidor: " + data.mensajito);
+         // En app real usar Toast/Snackbar, no alert
+         console.log("Notificación del Servidor: " + data.mensaje);
       });
   }
 
   ngOnDestroy() {
+    // Esto dispara la función de limpieza (off) en el Observable
     if (this.eventSub) this.eventSub.unsubscribe();
   }
 }`;
